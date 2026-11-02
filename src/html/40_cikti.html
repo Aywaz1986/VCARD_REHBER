@@ -1,0 +1,43 @@
+<section class="card" id="kartCikti">
+  <h2>4. Ayarlar ve çıktı</h2>
+  <div class="row">
+    <label>vCard sürümü
+      <select id="ver">
+        <option value="2.1">2.1 (varsayılan, Quoted-Printable)</option>
+        <option value="3.0">3.0 (UTF-8)</option>
+        <option value="4.0">4.0 (UTF-8)</option>
+      </select>
+    </label>
+    <label class="chk"><input type="checkbox" id="optSkip" checked> Boş alanları yazma</label>
+    <label class="chk"><input type="checkbox" id="optFn" checked> Görünen Ad boşsa Ad Soyad'ı kullan</label>
+    <label class="chk"><input type="checkbox" id="optSplit"> Adı/Soyadı ayır (son kelime soyad)</label>
+    <label class="chk"><input type="checkbox" id="optTel" checked> Telefonları +90 biçimine çevir</label>
+  </div>
+  <fieldset class="dahil">
+    <legend>Rehbere yazılacak alanlar <span class="hint">(işareti kaldırılan alan .vcf'ye hiç yazılmaz)</span></legend>
+    <div id="dahilListe" class="row"></div>
+  </fieldset>
+
+  <div class="row" style="margin-top:12px">
+    <button id="genBtn" class="pri">Rehberi hazırla</button>
+    <button id="dlBtn" disabled>rehberiniz.vcf indir</button>
+    <button id="cpBtn" disabled>Panoya kopyala</button>
+    <span id="msg" class="msg"></span>
+  </div>
+  <div id="dogrulaSonuc" class="msg"></div>
+  <pre id="out" hidden></pre>
+
+  <h3>Gruba göre çıktı ve takvim</h3>
+  <div class="row">
+    <label>Grup <select id="grupSec"></select></label>
+    <button id="grupIndir">Seçili grubu .vcf indir</button>
+    <button id="grupZip">Gruplara göre ZIP indir</button>
+    <button id="icsIndir">Doğum günleri (.ics) indir</button>
+  </div>
+
+  <ol class="hint">
+    <li>Oluşan <b>rehberiniz.vcf</b> dosyasını cep telefonunuza e-posta ile gönderin.</li>
+    <li>Telefondan maili açıp eki seçin ve <i>Önizle</i> deyin (program seçimi çıkarsa <i>Rehber</i>'i seçin).</li>
+    <li>Çıkan listeden <i>Cihaz</i>'ı seçerek aktarımı tamamlayın.</li>
+  </ol>
+</section>

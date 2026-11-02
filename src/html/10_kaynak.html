@@ -1,0 +1,83 @@
+<section class="card" id="kartKaynak">
+  <h2>1. Veri kaynağı</h2>
+  <div class="row tabs" id="kaynakSekme">
+    <button data-kaynak="excel" class="on">Excel / CSV</button>
+    <button data-kaynak="sqlite">Özlük veritabanı (SQLite)</button>
+    <button data-kaynak="vcf">.vcf içe aktar</button>
+    <button data-kaynak="json">Çalışma yedeği (JSON)</button>
+    <span class="grow"></span>
+    <label>Yükleme şekli
+      <select id="yukleMod"><option value="degistir">Listeyi değiştir</option><option value="ekle">Listenin sonuna ekle</option></select>
+    </label>
+  </div>
+
+  <div class="pane" data-pane="excel">
+    <div id="drop">
+      Excel (.xlsx, .xlsm, .xls) veya CSV dosyasını buraya sürükleyin
+      <div class="row center" style="margin-top:8px">
+        <label class="btn pri">Dosya seç<input id="fileExcel" type="file" accept=".xlsx,.xlsm,.xls,.csv" hidden></label>
+        <select id="sheetSel" hidden></select>
+        <button id="tplBtn">Boş şablon indir (.xlsx)</button>
+      </div>
+    </div>
+    <p class="hint">"Liste" sayfası varsa o kullanılır. Sütun sırası: Adı Soyadı, Görünen Ad, Mobil, İş, Fax, Ev, Mail, Adres, Firma, Unvan, Web, Grup, Fotoğraf, BDAY. İlk satır başlıktır.</p>
+  </div>
+
+  <div class="pane" data-pane="sqlite" hidden>
+    <div class="row">
+      <label class="btn pri">Veritabanı dosyası seç (.sqlite / .db)<input id="fileSqlite" type="file" accept=".sqlite,.sqlite3,.db,.s3db" hidden></label>
+      <label>Tablo <select id="sqTablo" disabled></select></label>
+      <span id="sqBilgi" class="mut"></span>
+    </div>
+    <p class="hint">Dosya yalnızca tarayıcıda okunur, değiştirilmez. Yalnızca eşleştirdiğiniz sütunlar okunur (TC, kan grubu gibi eşleştirilmeyen alanlara dokunulmaz). Şifreli veritabanı açılamaz; şifresiz bir kopya gerekir.</p>
+
+    <div id="eslesPanel" hidden>
+      <h3>Alan eşleştirme</h3>
+      <div class="row">
+        <button id="eslesOner">Otomatik öner</button>
+        <button id="eslesTemizle">Temizle</button>
+        <select id="eslesKayitli"><option value="">Kayıtlı eşleştirmeler…</option></select>
+        <button id="eslesUygula">Uygula</button>
+        <button id="eslesKaydet">Mevcut eşleştirmeyi kaydet…</button>
+        <button id="eslesSil" class="dng">Sil</button>
+      </div>
+      <div id="eslesGrid"></div>
+      <h3>Satır süzgeci (isteğe bağlı)</h3>
+      <div class="row">
+        <select id="sfSutun"></select>
+        <select id="sfOp">
+          <option value="">— süzgeç yok —</option>
+          <option value="bos">boş</option>
+          <option value="dolu">dolu</option>
+          <option value="esit">şuna eşit</option>
+          <option value="esitdegil">şuna eşit değil</option>
+          <option value="icerir">şunu içerir</option>
+        </select>
+        <input id="sfDeger" type="text" placeholder="değer">
+        <span class="hint">Örn. ayrılış tarihi sütunu <i>boş</i> → yalnızca çalışanlar.</span>
+      </div>
+      <div class="row" style="margin-top:10px">
+        <button id="sqYukle" class="pri">Kayıtları yükle</button>
+        <span id="sqSonuc" class="mut"></span>
+      </div>
+    </div>
+  </div>
+
+  <div class="pane" data-pane="vcf" hidden>
+    <div class="row">
+      <label class="btn pri">.vcf dosyası seç<input id="fileVcf" type="file" accept=".vcf,.vcard" hidden></label>
+      <span class="hint">vCard 2.1, 3.0 ve 4.0 okunur (Quoted-Printable, katlanmış satırlar, fotoğraf dahil). Telefondan dışa aktarılan rehber Excel'e/listeye geri alınabilir.</span>
+    </div>
+  </div>
+
+  <div class="pane" data-pane="json" hidden>
+    <div class="row">
+      <label class="btn pri">Yedek dosyası yükle (.json)<input id="fileJson" type="file" accept=".json" hidden></label>
+      <button id="jsonIndir">Mevcut çalışmayı yedekle (.json)</button>
+      <label class="chk"><input type="checkbox" id="otoSakla"> Çalışmayı bu tarayıcıda sakla (fotoğrafsız)</label>
+    </div>
+    <p class="hint">Yedek dosyası kişisel veri içerir; güvenli saklayın. Tarayıcıda saklama varsayılan olarak kapalıdır.</p>
+  </div>
+
+  <div id="msgKaynak" class="msg"></div>
+</section>

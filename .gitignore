@@ -1,0 +1,24 @@
+# Gerçek kişi verisi ve çalışma dosyaları depoya konmaz
+*.sqlite
+*.sqlite3
+*.db
+*.s3db
+*.vcf
+*.vcard
+rehber_yedek*.json
+*.xlsx
+*.xlsm
+*.xls
+*.csv
+!tests/fixtures/*.xlsx
+
+# Python / test
+__pycache__/
+*.pyc
+.pytest_cache/
+
+# Editör / işletim sistemi
+.vscode/
+.idea/
+Thumbs.db
+.DS_Store

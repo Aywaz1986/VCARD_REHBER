@@ -1,0 +1,3 @@
+#eslesGrid{display:grid;grid-template-columns:minmax(150px,200px) minmax(180px,260px) minmax(200px,1fr);gap:6px 10px;align-items:center;margin:10px 0}
+#eslesGrid .h{font-weight:600;font-size:calc(var(--fontsize)*.86);color:var(--mut)}
+#eslesGrid select,#eslesGrid input{width:100%}

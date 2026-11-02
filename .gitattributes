@@ -1,0 +1,8 @@
+* text=auto eol=lf
+*.html text eol=lf
+*.js text eol=lf
+*.css text eol=lf
+*.py text eol=lf
+*.md text eol=lf
+dist/*.html linguist-generated=true
+src/vendor/* linguist-vendored

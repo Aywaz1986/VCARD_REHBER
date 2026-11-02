@@ -1,0 +1,19 @@
+button,.btn{font:inherit;border:1px solid var(--line);background:var(--card);color:var(--ink);padding:7px 12px;border-radius:7px;cursor:pointer}
+button:hover:not(:disabled),.btn:hover{border-color:var(--acc)}
+button:disabled{opacity:.5;cursor:not-allowed}
+.pri{background:var(--acc);border-color:var(--acc);color:#fff;font-weight:600}
+.pri:hover:not(:disabled){background:var(--acc2)}
+.dng:hover:not(:disabled){border-color:var(--bad);color:var(--bad)}
+select,input[type=text],input[type=search]{font:inherit;padding:6px 8px;border:1px solid var(--line);border-radius:7px;background:var(--bg);color:var(--ink)}
+label.chk{display:flex;gap:6px;align-items:center;cursor:pointer}
+.tabs{border-bottom:1px solid var(--line);padding-bottom:10px;margin-bottom:10px}
+.tabs button.on{background:var(--acc);border-color:var(--acc);color:#fff}
+#drop{border:2px dashed var(--line);border-radius:10px;padding:16px;text-align:center;color:var(--mut)}
+#drop.over{border-color:var(--acc);background:color-mix(in srgb,var(--acc) 8%,transparent)}
+fieldset.dahil{border:1px solid var(--line);border-radius:8px;margin:12px 0 0;padding:8px 12px}
+fieldset.dahil legend{padding:0 6px;font-size:calc(var(--fontsize)*.9)}
+.sorun{display:flex;gap:8px;align-items:baseline;padding:3px 0;border-bottom:1px dashed var(--line)}
+.sorun b{min-width:48px}
+.sorun button{padding:1px 8px;font-size:12px}
+.grup{border:1px solid var(--line);border-radius:8px;padding:6px 10px;margin:6px 0}
+.pager{margin-top:8px}

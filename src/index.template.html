@@ -1,0 +1,32 @@
+<!DOCTYPE html>
+<html lang="tr">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>VCARD Rehber Hazırlama</title>
+<style>
+{{INCLUDE:css/*.css}}
+</style>
+</head>
+<body data-surum="{{APP_SURUM}}">
+{{INCLUDE:html/00_baslik.html}}
+<main>
+{{INCLUDE:html/10_kaynak.html}}
+{{INCLUDE:html/20_liste.html}}
+{{INCLUDE:html/30_kontrol.html}}
+{{INCLUDE:html/40_cikti.html}}
+</main>
+<script>
+{{INCLUDE:vendor/xlsx.full.min.js}}
+</script>
+<script>
+{{INCLUDE:vendor/sql-wasm.js}}
+</script>
+<script>
+{{INCLUDE:vendor/sql-wasm.wasm.b64.js}}
+</script>
+<script>
+{{INCLUDE:js/*.js}}
+</script>
+</body>
+</html>

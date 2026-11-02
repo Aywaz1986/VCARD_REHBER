@@ -1,0 +1,13 @@
+.tw{overflow:auto;max-height:55vh;border:1px solid var(--line);border-radius:8px}
+table{border-collapse:collapse;width:max-content;min-width:100%}
+th,td{border-bottom:1px solid var(--line);border-right:1px solid var(--line);padding:0;white-space:nowrap}
+th{position:sticky;top:0;background:var(--card);padding:6px 8px;text-align:left;font-size:calc(var(--fontsize)*.86);z-index:2}
+td input{border:0;background:transparent;color:var(--ink);font:inherit;padding:6px 8px;width:150px;outline:none}
+td input:focus{background:color-mix(in srgb,var(--acc) 10%,transparent)}
+td.n{padding:4px 8px;color:var(--mut);text-align:right;position:sticky;left:0;background:var(--card)}
+td.ph{padding:3px 6px;min-width:130px}
+td.ph img{width:28px;height:28px;object-fit:cover;border-radius:4px;vertical-align:middle;margin-right:6px}
+td.ph .fn{font-size:calc(var(--fontsize)*.8);color:var(--mut);max-width:100px;overflow:hidden;text-overflow:ellipsis;display:inline-block;vertical-align:middle}
+td.ph button{padding:2px 6px;font-size:12px}
+td.err input{background:color-mix(in srgb,var(--bad) 14%,transparent)}
+tr.flash td{background:color-mix(in srgb,var(--warn) 25%,transparent)}
