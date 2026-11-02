@@ -37,7 +37,7 @@ with sayfa_ac() as s:
 
     # --- mükerrer ---
     s.click("#mukerrerBtn")
-    kontrol("mükerrer: aynı ad (büyük/küçük, boşluk farkı) tek grup", "1 mükerrer grup" in s.inner_text("#kontrolOzet"), s.inner_text("#kontrolOzet"))
+    kontrol("mükerrer: aynı ad (büyük/küçük, boşluk farkı) tek grup", "1 kesin, 0 olası" in s.inner_text("#kontrolOzet"), s.inner_text("#kontrolOzet"))
     s.once("dialog", lambda d: d.accept())
     s.click("#mukerrerBirlestir")
     sat = s.evaluate("VCARD.D.satirlar.map(r=>({n:r.name,m:r.mail,t:r.title,c:r.cell}))")

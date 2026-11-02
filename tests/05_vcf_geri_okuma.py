@@ -27,7 +27,7 @@ with sayfa_ac() as s:
     kontrol("2.1 QP yumuşak satır sonu birleşti", a["addr"] == "Uzun adres bir iki", a["addr"])
     kontrol("2.1 BDAY", a["bday"] == "19800102")
     kontrol("3.0 ev/cep ayrımı", b["home"] == "02125550000" and b["cell"] == "+905009998877")
-    kontrol("3.0 ORG kaçışlı ; ve birim", b["org"] == "Firma; A.Ş. - Birim", b["org"])
+    kontrol("3.0 ORG kaçışlı ; ve birim yolu", b["org"] == "Firma; A.Ş. > Birim", b["org"])
     kontrol("3.0 BDAY ISO", b["bday"] == "19901231")
     kontrol("3.0 URL ham", b["url"] == "https://ornek.com/a")
     kontrol("4.0 data URI fotoğraf", (c["_img"] or "").startswith("data:image/jpeg;base64,/9j/"))

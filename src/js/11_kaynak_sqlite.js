@@ -78,8 +78,10 @@ function eslesYaz(m){
 const ONERI={
   name:['adisoyadi','adsoyad','isimsoyisim','tamad','isim'],
   cell:['gsmno','gsm','ceptelefonu','cep','mobil'],
-  work:['dahili','istelefonu','istel'],
+  work:['istelefonu','istel'],
+  ext:['dahili'],
   mail:['email','eposta','mail'],
+  mail2:['emailint','epostaint','mailint'],
   org:['bolum','birim','departman'],
   title:['unvan','pozisyon','gorev'],
   bday:['dogumtarihi','dogum'],

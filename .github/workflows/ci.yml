@@ -15,7 +15,7 @@ jobs:
           python-version: "3.12"
       - name: Bağımlılıklar
         run: |
-          pip install playwright pillow openpyxl
+          pip install playwright pillow openpyxl opencv-python-headless numpy
           playwright install --with-deps chromium
       - name: dist kaynakla aynı mı
         run: python build.py --check

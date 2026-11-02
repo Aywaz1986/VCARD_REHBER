@@ -2,6 +2,25 @@
 
 ## Yayınlanmamış
 
+## 2.1.0 — 2026-11-03
+Alan ve biçim zenginleştirme, veri kalitesi ve yeni çıktı biçimleri.
+
+### Eklendi
+- Yeni alanlar (Excel 15–20. sütun): İkinci E-posta, Dahili, Takma Ad, Not, Şehir/İlçe, Posta Kodu. Eski 14 sütunlu dosyalar aynen çalışır.
+- vCard: `NICKNAME`, `NOTE`, ikinci `EMAIL`, yapılandırılmış `ADR` (sokak;şehir;;posta), dahili numara (ayrı iş numarası veya `ana,dahili`), bileşenli `ORG` (`A > B > C` yolu), görünen ad şablonu (`{name} ({org})`).
+- `.vcf` okuma yeni alanları, `ana,dahili` ve yapılandırılmış adresi de çözer; kendini sınama yeni alanları da karşılaştırır.
+- **Önizlemeli toplu düzeltme:** boşluk/görünmez karakter, ad biçimi (Türkçe i/İ doğru), e-posta temizliği, telefon, unvan/kurum sözlüğü (tarayıcıda saklanır); değişiklikler tek tek işaretlenir.
+- Mükerrerde **benzer ad** (sözcük sırası farkı, 1 harf yazım farkı): yalnızca "olası" grup olarak gösterilir, "kesin olanları birleştir" olası grupları birleştirmez.
+- **Outlook CSV** ve **Google Kişiler CSV** (UTF-8 BOM, kurum yolu → Company/Department, seçilebilir tarih biçimi, formül enjeksiyonu koruması, grup kapsamı, alan seçimine uyar).
+- **Tek kişilik QR kod** (vCard 3.0, fotoğrafsız, PNG indirme; sığmayan kayıtta anlaşılır uyarı) — `qrcode-generator` 1.4.4 (MIT) gömüldü.
+- **Yazdırılabilir rehber** (gruplu tablo, yazdırma stili; tarayıcıdan PDF/yazıcı).
+- Özlük otomatik önerisi: `dahili` → Dahili, `e_mail_int` → İkinci E-posta.
+- Testler: 07 (alan zenginleştirme), 08 (veri kalitesi), 09 (çıktı biçimleri; QR gerçekten OpenCV ile okunur).
+
+### Değişti
+- Kurum (`ORG`) okunurken bileşenler `" > "` ile birleştirilir (önceden `" - "`).
+- `mukerrerGruplar(benzer)` artık `[{idx, tur}]` döndürür.
+
 ## 2.0.0 — 2026-11-02
 İlk HTML sürümü (eski Excel/VBA aracı V1.6'nın devamı). Depo yapısı kuruldu.
 

@@ -3,7 +3,8 @@ function secenekler(){
   const dahil={};
   ALANLAR.forEach(a=>{const c=document.querySelector('[data-dahil="'+a.k+'"]');if(c)dahil[a.k]=c.checked});
   return {
-    bosAtla:$('optSkip').checked,fnYedek:$('optFn').checked,ayir:$('optSplit').checked,tel:$('optTel').checked,dahil
+    bosAtla:$('optSkip').checked,fnYedek:$('optFn').checked,ayir:$('optSplit').checked,tel:$('optTel').checked,dahil,
+    dahiliMod:$('dahiliMod').value,orgBilesen:$('optOrg').checked,dispSablon:$('dispSablon').value.trim()
   };
 }
 function dahilListeKur(){

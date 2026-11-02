@@ -57,9 +57,13 @@ Kurallar: `bday` her zaman `YYYYMMDD` ya da boş; geçersiz değer olduğu gibi 
 | disp | `FN;…QP` | `FN` | `FN` |
 | cell/work/fax/home | `TEL;CELL`, `TEL;WORK`, `TEL;WORK;FAX;PREF`, `TEL;HOME` | `TEL;TYPE=…` | `TEL;TYPE=cell/work/work,fax/home` |
 | mail | `EMAIL;PREF;INTERNET` | `EMAIL;TYPE=INTERNET,PREF` | `EMAIL` |
-| addr | `ADR;WORK;…QP:;;adres` | `ADR;TYPE=WORK:;;adres;;;;` | `ADR;TYPE=work:;;adres;;;;` |
-| org/title/cat | QP | kaçışlı UTF-8 | kaçışlı UTF-8 |
+| addr | `ADR;WORK;…QP:;;sokak;şehir;;posta;` | `ADR;TYPE=WORK:;;sokak;şehir;;posta;` | `ADR;TYPE=work:;;sokak;şehir;;posta;` |
+| org/title/cat | QP; `org` `A > B > C` ise (seçenek açıksa) `ORG:A;B;C` | kaçışlı UTF-8, aynı kural | aynı |
 | bday | `YYYYMMDD` | `YYYY-MM-DD` | `YYYYMMDD` |
+| mail2 | `EMAIL;INTERNET` | `EMAIL;TYPE=INTERNET` | `EMAIL` |
+| ext (dahili) | ayrı `TEL;WORK` veya `ana,dahili` | aynı | aynı |
+| nick, note | `NICKNAME`, `NOTE` (QP) | kaçışlı UTF-8 | kaçışlı UTF-8 |
+| city, zip | `ADR` bileşenleri 4. ve 6. | aynı | aynı |
 | photo | `PHOTO;ENCODING=BASE64;JPEG:` + 76'lık satırlar + boş satır | `PHOTO;ENCODING=b;TYPE=JPEG:` (katlı) | `PHOTO:data:image/jpeg;base64,…` (katlı) |
 
 ## 4. Kaynak sözleşmesi
@@ -94,6 +98,15 @@ sequenceDiagram
 
 **Kendini sınama:** `vcfUret` çıktısı `vcfOku` ile geri okunur; kişi sayısı, ad, telefonlar, e-posta, adres/kurum/unvan kaynakla karşılaştırılır. Fark varsa uyarı gösterilir.
 
+## 5b. Veri kalitesi ve yeni çıktılar
+
+- **Toplu düzeltme** (`41_toplu_duzeltme.js`): `duzeltmeUret(seçenekler)` her alan için *tek nihai değer* hesaplar (boşluk → ad biçimi → e-posta → telefon → sözlük sırasıyla) ve yalnızca farkları `{i,k,eski,yeni}` olarak döndürür. Önizleme bu listeyi gösterir; uygulama yalnızca işaretli olanları ve `eski` değer hâlâ aynıysa yazar (araya giren elle düzenleme ezilmez).
+- **Ad biçimi** `toLocaleUpperCase('tr')`/`toLocaleLowerCase('tr')` ile yapılır (i/İ, ı/I doğru). Sözlük, Türkçe küçük harfe çevrilmiş kopyada tüm-sözcük eşleşmesi arar ve değişikliği asıl metinde yapar.
+- **Mükerrer:** *kesin* = aynı telefon (son 10 hane) veya aynı ad anahtarı; *olası* = sözcük sıralı anahtar eşitliği veya Levenshtein ≤ 1 (anahtar uzunluğu ≥ 8; uzunluk kovalarıyla sınırlı karşılaştırma). Birleştirme düğmesi yalnızca kesin grupları işler.
+- **CSV:** UTF-8 BOM, CRLF; `=`/`@` ile (ve sayı olmayan `-` ile) başlayan hücrelerin başına `'` eklenir. Alan seçimi (`dahil`) ve grup kapsamı CSV'ye de uygulanır.
+- **QR:** `qrcode-generator` (hata düzeltme L, otomatik sürüm, UTF-8 bayt kipi). İçerik, fotoğrafsız vCard 3.0'dır; kapasiteyi aşarsa anlaşılır uyarı gösterilir. Test, üretilen QR'ı OpenCV ile gerçekten okur.
+- **Yazdırılabilir rehber:** `#yazdirAlani` geçici eklenir; `@media print` ile `body>*:not(#yazdirAlani)` gizlenir, `afterprint`'te alan kaldırılır.
+
 ## 6. Önemli tasarım kararları
 
 - **QP kodlaması (2.1):** `=`, `;`, boşluk ve ASCII dışı baytlar `=XX`. `;` kodlanmazsa telefon adresi alanlara böler. Ayrıştırıcı bileşenli alanlarda (N, ADR, ORG) **önce böler, sonra çözer**.
@@ -108,4 +121,5 @@ sequenceDiagram
 | Anahtar | İçerik |
 |---|---|
 | `vcard.eslesme.v1` | Kayıtlı alan eşleştirmeleri `{ad:{tablo,map}}` (yalnız sütun adları, veri yok) |
+| `vcard.sozluk.v1` | Unvan/kurum sözlüğü metni |
 | `vcard.calisma.v1` | Yalnızca "Çalışmayı bu tarayıcıda sakla" işaretliyse: fotoğrafsız kişi listesi |

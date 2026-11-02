@@ -64,17 +64,28 @@ function vcfOku(metin){
         r.name=ham;break}
       case 'FN':r.disp=v.trim();break;
       case 'TEL':{
-        const t=tipler;let k=null;
+        const t=tipler;let k=null;v=String(v).trim();
         if(/FAX/.test(t))k='fax';else if(/CELL|MOBILE/.test(t))k='cell';else if(/HOME/.test(t))k='home';else if(/WORK/.test(t))k='work';
         else k=r.cell===''?'cell':(r.work===''?'work':null);
-        if(k&&r[k]===''&&v.trim())r[k]=v.trim();
+        if(k==='work'&&r.work!==''&&/^\d{2,6}$/.test(v)){if(r.ext==='')r.ext=v;break}      // ikinci kısa iş numarası = dahili
+        if(k==='work'){const m=v.match(/^(.*\S),(\d{2,6})$/);if(m){v=m[1];if(r.ext==='')r.ext=m[2]}}   // ana,dahili
+        if(k&&r[k]===''&&v)r[k]=v;
         break}
-      case 'EMAIL':if(r.mail==='')r.mail=v.trim();break;
+      case 'EMAIL':if(r.mail==='')r.mail=v.trim();else if(r.mail2==='')r.mail2=v.trim();break;
+      case 'NICKNAME':r.nick=v.trim();break;
+      case 'NOTE':r.note=v.trim();break;
       case 'ADR':{
-        const p=v.map(x=>x.trim()).filter(Boolean);
-        if(r.addr==='')r.addr=p.length===1?p[0]:p.join(', ');
+        // PO;ext;sokak;şehir;bölge;posta;ülke
+        const p=v.map(x=>x.trim());
+        const sokak=[p[0],p[1],p[2]].filter(Boolean).join(', ');
+        if(r.addr===''&&r.city===''&&r.zip===''){
+          r.addr=sokak;
+          r.city=[p[3],p[4]].filter(Boolean).join(' / ');
+          r.zip=p[5]||'';
+          if(p[6]&&!r.city)r.city=p[6];
+        }
         break}
-      case 'ORG':r.org=v.map(x=>x.trim()).filter(Boolean).join(' - ');break;
+      case 'ORG':r.org=v.map(x=>x.trim()).filter(Boolean).join(' > ');break;
       case 'TITLE':r.title=v.trim();break;
       case 'URL':if(r.url==='')r.url=v.trim();break;
       case 'CATEGORIES':r.cat=v.trim();break;

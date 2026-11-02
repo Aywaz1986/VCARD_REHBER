@@ -4,8 +4,34 @@
     <button id="kontrolBtn" class="pri">Listeyi denetle</button>
     <button id="telDuzelt">Telefonları +90 biçimine düzelt</button>
     <button id="mukerrerBtn">Mükerrer kayıtları bul</button>
-    <button id="mukerrerBirlestir" disabled>Tümünü birleştir</button>
+    <label class="chk"><input type="checkbox" id="mukBenzer"> Benzer adları da bul (yazım farkı, sözcük sırası)</label>
+    <button id="mukerrerBirlestir" disabled>Kesin olanları birleştir</button>
   </div>
-  <p class="hint">Denetim: ad boş, telefon/e-posta geçersiz, kişide hiç iletişim bilgisi yok, geçersiz doğum tarihi. Mükerrer: aynı telefon veya aynı ad.</p>
+  <p class="hint">Denetim: ad boş, telefon/e-posta geçersiz, kişide hiç iletişim bilgisi yok, geçersiz doğum tarihi. Mükerrer: aynı telefon veya aynı ad (kesin); benzer adlar yalnızca "olası" olarak gösterilir ve tek tek onaylanır.</p>
   <div id="kontrolSonuc"></div>
+
+  <h3>Toplu düzeltme (önizlemeli)</h3>
+  <div class="row">
+    <label class="chk"><input type="checkbox" id="duzBosluk" checked> Boşluk / görünmez karakter temizliği</label>
+    <label>Ad biçimi
+      <select id="duzAd">
+        <option value="yok">Değiştirme</option>
+        <option value="ilk">Ayşe Çağlar Öztürk</option>
+        <option value="soyad">Ayşe Çağlar ÖZTÜRK</option>
+        <option value="buyuk">AYŞE ÇAĞLAR ÖZTÜRK</option>
+      </select>
+    </label>
+    <label class="chk"><input type="checkbox" id="duzMail" checked> E-postayı küçük harfe çevir/temizle</label>
+    <label class="chk"><input type="checkbox" id="duzTel"> Telefonları +90 biçimine çevir</label>
+    <label class="chk"><input type="checkbox" id="duzUnvan"> Unvan/kurum sözlüğünü uygula</label>
+  </div>
+  <label class="hint" style="display:block;margin-top:6px">Sözlük (her satır <code>bul=yerine</code>; tüm sözcük eşleşir, büyük/küçük harf fark etmez; <code>#</code> ile başlayan satır yorumdur)
+    <textarea id="unvanSozluk" rows="4" style="width:100%;font:inherit;background:var(--bg);color:var(--ink);border:1px solid var(--line);border-radius:7px;padding:6px 8px" placeholder="Muh.=Mühendis&#10;Müd.=Müdür&#10;Tekn.=Teknisyen"></textarea>
+  </label>
+  <div class="row" style="margin-top:8px">
+    <button id="duzOnizle" class="pri">Önizle</button>
+    <button id="duzUygula" disabled>İşaretlileri uygula</button>
+    <span class="hint">Ad biçimi ve sözlük yalnızca seçtiğinizde çalışır; "van", "de" gibi küçük harfli parçalar da baş harfi büyütülür, önizlemede kontrol edin.</span>
+  </div>
+  <div id="duzSonuc"></div>
 </section>

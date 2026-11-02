@@ -4,7 +4,7 @@
   python tests/run_tests.py            hepsi
   python tests/run_tests.py 02 04      yalnızca 02_ ve 04_ ile başlayanlar
 
-Gereksinim: pip install playwright pillow openpyxl ; playwright install chromium
+Gereksinim: pip install playwright pillow openpyxl opencv-python-headless numpy ; playwright install chromium
 """
 import functools
 import glob

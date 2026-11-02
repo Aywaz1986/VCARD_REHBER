@@ -40,7 +40,7 @@ with sayfa_ac() as s:
     s.set_input_files("#fileSqlite", yol)
     s.wait_for_function("!document.getElementById('eslesPanel').hidden")
     kontrol("'personeller' tablosu otomatik seçildi", s.input_value("#sqTablo") == "personeller")
-    kontrol("eşleştirme satırı her alan için var", s.locator("[data-map]").count() == 14)
+    kontrol("eşleştirme satırı her alan için var", s.locator("[data-map]").count() == 20)
 
     s.click("#eslesOner")
     sec = s.evaluate("Object.fromEntries([...document.querySelectorAll('[data-map]')].map(e=>[e.dataset.map,e.value]))")
@@ -48,9 +48,11 @@ with sayfa_ac() as s:
     kontrol("öneri: mobil/bölüm/unvan/foto/doğum", (sec["cell"], sec["org"], sec["title"], sec["photo"], sec["bday"]) == ("gsm_no", "bolum", "unvan", "foto", "dogum_tarihi"), sec)
     kontrol("öneri: e_mail (e_mail_int değil)", sec["mail"] == "e_mail", sec["mail"])
     kontrol("ev adresi otomatik önerilmedi (gizlilik)", sec["addr"] == "", sec["addr"])
+    kontrol("öneri: dahili → Dahili, e_mail_int → İkinci E-posta", (sec["ext"], sec["mail2"]) == ("dahili", "e_mail_int"), (sec["ext"], sec["mail2"]))
 
-    # el ile eşleştirme: dahili -> iş telefonu, şablonla görünen ad
+    # el ile eşleştirme: iş telefonu için de dahili sütunu, şablonla görünen ad, ikinci e-posta eşleşmesini kaldır
     s.select_option('[data-map="work"]', "dahili")
+    s.select_option('[data-map="mail2"]', "")
     s.fill('[data-sab="disp"]', "{adi_soyadi} ({bolum})")
     # süzgeç: ayrılış tarihi boş
     s.select_option("#sfSutun", "ayrilis_tarihi")

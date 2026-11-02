@@ -1,5 +1,5 @@
 /* ===== 01 Sabitler ===== */
-const APP_SURUM='2.0.0';
+const APP_SURUM='2.1.0';
 
 /* Alan tanımları: sıra, Excel sütun sırası ile aynıdır (eski makro uyumu). */
 const ALANLAR=[
@@ -16,8 +16,16 @@ const ALANLAR=[
   {k:'url',  e:'Web Sitesi'},
   {k:'cat',  e:'Grup'},
   {k:'photo',e:'Fotoğraf (dosya adı)'},
-  {k:'bday', e:'Doğum Tarihi (BDAY)'}
+  {k:'bday', e:'Doğum Tarihi (BDAY)'},
+  /* v2.1: Excel'de 15. sütundan itibaren (ilk 14 sütun eski araçla aynı sırada kalır) */
+  {k:'mail2',e:'İkinci E-posta'},
+  {k:'ext',  e:'Dahili'},
+  {k:'nick', e:'Takma Ad'},
+  {k:'note', e:'Not'},
+  {k:'city', e:'Şehir / İlçe'},
+  {k:'zip',  e:'Posta Kodu'}
 ];
 const TEL_ALANLARI=ALANLAR.filter(a=>a.tel).map(a=>a.k);
 const LS_ESLESME='vcard.eslesme.v1';
 const LS_OTO='vcard.calisma.v1';
+const LS_SOZLUK='vcard.sozluk.v1';

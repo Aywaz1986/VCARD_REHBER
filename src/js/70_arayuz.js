@@ -47,7 +47,7 @@ function arayuzKur(){
   $('kontrolBtn').onclick=denetimGoster;
   $('telDuzelt').onclick=telefonlariDuzelt;
   $('mukerrerBtn').onclick=mukerrerGoster;
-  $('mukerrerBirlestir').onclick=()=>{if(_mukerrer.length&&confirm(_mukerrer.length+' grup birleştirilsin mi?'))mukerrerBirlestir(_mukerrer)};
+  $('mukerrerBirlestir').onclick=()=>{const k=_mukerrer.filter(g=>g.tur==='kesin');if(k.length&&confirm(k.length+' kesin grup birleştirilsin mi? (olası gruplar birleştirilmez)'))mukerrerBirlestir(k)};
   $('kontrolSonuc').addEventListener('click',e=>{
     const b=e.target.closest('button');if(!b)return;
     if(b.dataset.git!==undefined)satirGit(+b.dataset.git);
@@ -61,13 +61,24 @@ function arayuzKur(){
     catch(_){const t=document.createElement('textarea');t.value=D.vcf;document.body.appendChild(t);t.select();document.execCommand('copy');t.remove()}
     say('msg','Panoya kopyalandı.','ok');
   };
-  ['ver','optSkip','optFn','optSplit','optTel'].forEach(id=>$(id).addEventListener('change',cikiTemizle));
+  ['ver','optSkip','optFn','optSplit','optTel','dahiliMod','optOrg'].forEach(id=>$(id).addEventListener('change',cikiTemizle));
   $('dahilListe').addEventListener('change',cikiTemizle);
+  $('dispSablon').addEventListener('input',cikiTemizle);
   $('grupIndir').onclick=grupIndir;
   $('grupZip').onclick=grupZip;
   $('icsIndir').onclick=icsIndir;
+  $('outlookCsv').onclick=()=>csvIndir('outlook');
+  $('googleCsv').onclick=()=>csvIndir('google');
+  $('yazdirBtn').onclick=rehberYazdir;
+  $('qrKapat').onclick=()=>$('qrDlg').close();
+  // toplu düzeltme
+  sozlukYukle();
+  $('unvanSozluk').addEventListener('change',sozlukKaydet);
+  $('duzOnizle').onclick=duzeltmeOnizle;
+  $('duzUygula').onclick=duzeltmeUygula;
 
   // test ve ileri düzey kullanım için dışa açılan küçük API
-  window.VCARD={D,vcfUret,vcfOku,vcfDogrula,telNorm,bdayNorm,denetle,mukerrerGruplar,icsUret,zipOlustur,tabloCiz,APP_SURUM};
+  window.VCARD={D,vcfUret,vcfOku,vcfDogrula,telNorm,bdayNorm,denetle,mukerrerGruplar,icsUret,zipOlustur,tabloCiz,APP_SURUM,
+    adBicimle,bosluklariTemizle,epostaTemizle,sozlukUygula,sozlukAyristir,duzeltmeUret,outlookCsvUret,googleCsvUret,qrUret,qrVcfMetni,yazdirHazirla,secenekler};
 }
 arayuzKur();

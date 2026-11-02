@@ -34,7 +34,7 @@ function excelSayfaOku(ad){
 function sablonIndir(){
   const ws=XLSX.utils.aoa_to_sheet([
     ALANLAR.map(a=>a.e),
-    ['Örnek Kişi','','+905001112233','','','','ornek@mail.com','Adres satırı','Firma','Unvan','','Grup','','05.05.1980']
+    ['Örnek Kişi','','+905001112233','','','','ornek@mail.com','Adres satırı','Firma','Unvan','','Grup','','05.05.1980','ornek2@mail.com','4101','Takma','Not metni','Ankara','06000']
   ]);
   ws['!cols']=ALANLAR.map(()=>({wch:22}));
   const wb=XLSX.utils.book_new();XLSX.utils.book_append_sheet(wb,ws,'Liste');

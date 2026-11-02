@@ -28,7 +28,7 @@ function tabloCiz(){
         h+='<td'+(hata?' class="err"':'')+'><input type="text" data-k="'+k+'" value="'+esc(r[k])+'"></td>';
       }
     });
-    h+='<td><button class="dng" data-del="'+i+'" title="Satırı sil">✕</button></td></tr>';
+    h+='<td><button data-qr="'+i+'" title="Tek kişilik QR kod">📱</button> <button class="dng" data-del="'+i+'" title="Satırı sil">✕</button></td></tr>';
   });
   $('tbl').innerHTML=h+'</tbody>';
   $('cnt').textContent='— '+D.satirlar.length+' kişi'+(idx.length!==D.satirlar.length?' ('+idx.length+' eşleşen)':'');
@@ -61,6 +61,7 @@ function tabloOlaylari(){
   });
   t.addEventListener('click',e=>{
     const b=e.target.closest('button');if(!b)return;
+    if(b.dataset.qr!==undefined){qrGoster(+b.dataset.qr);return}
     if(b.dataset.del!==undefined){D.satirlar.splice(+b.dataset.del,1);tabloCiz();grupListesiYenile();otoSaklaYaz()}
     if(b.dataset.pick!==undefined){
       const f=document.createElement('input');f.type='file';f.accept='image/*';

@@ -35,9 +35,13 @@ Tek sayfa, dört kart: **1 Veri kaynağı → 2 Liste → 3 Kontrol → 4 Ayarla
 
 | id | Görev |
 |---|---|
-| `#kontrolBtn`, `#telDuzelt`, `#mukerrerBtn`, `#mukerrerBirlestir` | Denetim, telefon düzeltme, mükerrer bul, tümünü birleştir |
+| `#kontrolBtn`, `#telDuzelt`, `#mukerrerBtn`, `#mukerrerBirlestir` | Denetim, telefon düzeltme, mükerrer bul, kesin olanları birleştir |
 | `#kontrolSonuc` | Sonuç listesi (`data-git` satıra git, `data-birles` grubu birleştir) |
 | `#kontrolOzet` | Özet |
+| `#mukBenzer` | Benzer adları da bul (olası grup) |
+| `#duzBosluk`, `#duzAd`, `#duzMail`, `#duzTel`, `#duzUnvan` | Toplu düzeltme seçenekleri |
+| `#unvanSozluk` | Sözlük (`bul=yerine`, satır satır; tarayıcıda saklanır) |
+| `#duzOnizle`, `#duzUygula`, `#duzSonuc` | Önizle, işaretlileri uygula (`data-duz` onay kutuları) |
 
 ## 4. Ayarlar ve çıktı (`40_cikti.html`)
 
@@ -45,9 +49,16 @@ Tek sayfa, dört kart: **1 Veri kaynağı → 2 Liste → 3 Kontrol → 4 Ayarla
 |---|---|
 | `#ver` | vCard sürümü 2.1 / 3.0 / 4.0 |
 | `#optSkip`, `#optFn`, `#optSplit`, `#optTel` | Boş alan atla, FN yedeği, ad/soyad ayır, telefonu +90'a çevir |
+| `#dahiliMod`, `#optOrg`, `#dispSablon` | Dahili numara modu, bileşenli ORG, görünen ad şablonu |
+| `#outlookCsv`, `#googleCsv`, `#csvTarih` | CSV çıktıları ve doğum tarihi biçimi |
+| `#yazdirBtn` | Yazdırılabilir rehber (`#yazdirAlani` geçici alan) |
 | `#dahilListe` (`[data-dahil=alan]`) | Rehbere yazılacak alanlar |
 | `#genBtn`, `#dlBtn`, `#cpBtn` | Hazırla, indir, kopyala |
 | `#msg`, `#dogrulaSonuc`, `#out` | Mesaj, kendini sınama sonucu, önizleme |
 | `#grupSec`, `#grupIndir`, `#grupZip`, `#icsIndir` | Grup seçimi, grup .vcf, ZIP, .ics |
 
-Pencere/diyalog: yalnızca tarayıcı `prompt` (eşleştirme adı) ve `confirm` (silme/birleştirme) kullanılır.
+## QR penceresi (`src/html/50_qr.html`)
+
+`<dialog id="qrDlg">`: `#qrBaslik`, `#qrCanvas`, `#qrBilgi`, `#qrDl` (PNG indir), `#qrKapat`. Listede her satırın sonundaki 📱 (`data-qr`) açar.
+
+Pencere/diyalog: tarayıcı `prompt` (eşleştirme adı), `confirm` (silme/birleştirme) ve QR `<dialog>` kullanılır.

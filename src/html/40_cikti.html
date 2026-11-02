@@ -13,6 +13,19 @@
     <label class="chk"><input type="checkbox" id="optSplit"> Adı/Soyadı ayır (son kelime soyad)</label>
     <label class="chk"><input type="checkbox" id="optTel" checked> Telefonları +90 biçimine çevir</label>
   </div>
+  <div class="row" style="margin-top:8px">
+    <label>Dahili numara
+      <select id="dahiliMod">
+        <option value="ayri">Ayrı iş numarası olarak yaz</option>
+        <option value="ekle">Ana numaraya ekle (+90312…,4101)</option>
+      </select>
+    </label>
+    <label class="chk"><input type="checkbox" id="optOrg"> Kurumu <code>A &gt; B &gt; C</code> yolundan bileşenli yaz (ORG)</label>
+    <label>Görünen ad şablonu
+      <input type="text" id="dispSablon" placeholder="örn. {name} ({org})" style="min-width:220px">
+    </label>
+  </div>
+  <p class="hint" style="margin:4px 0 0">Şablon doluysa tüm kişilerde Görünen Ad'ın yerine kullanılır. Yer tutucular: <code>{name} {org} {title} {cat} {cell} {work} {ext} {mail} {nick} {city}</code> …</p>
   <fieldset class="dahil">
     <legend>Rehbere yazılacak alanlar <span class="hint">(işareti kaldırılan alan .vcf'ye hiç yazılmaz)</span></legend>
     <div id="dahilListe" class="row"></div>
@@ -26,6 +39,17 @@
   </div>
   <div id="dogrulaSonuc" class="msg"></div>
   <pre id="out" hidden></pre>
+
+  <h3>Diğer biçimler</h3>
+  <div class="row">
+    <button id="outlookCsv">Outlook CSV</button>
+    <button id="googleCsv">Google Kişiler CSV</button>
+    <label>CSV doğum tarihi
+      <select id="csvTarih"><option value="gg.aa.yyyy">gg.aa.yyyy</option><option value="yyyy-aa-gg">yyyy-aa-gg</option><option value="aa/gg/yyyy">aa/gg/yyyy</option></select>
+    </label>
+    <button id="yazdirBtn">Yazdırılabilir rehber (PDF / yazıcı)</button>
+    <span class="hint">Tek kişilik QR kodu için listede satırın sonundaki 📱 düğmesini kullanın.</span>
+  </div>
 
   <h3>Gruba göre çıktı ve takvim</h3>
   <div class="row">

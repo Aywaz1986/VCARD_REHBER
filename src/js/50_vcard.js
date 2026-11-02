@@ -22,12 +22,29 @@ const TEL_ONEK={
 };
 const Q21=';CHARSET=UTF-8;ENCODING=QUOTED-PRINTABLE';
 
-/* Tek kişi -> satır dizisi. o: {bosAtla, fnYedek, ayir, tel, dahil:{alan:bool}} */
+/* {alan} yer tutuculu şablonu satırla doldurur (görünen ad şablonu) */
+function sablonUygula(sablon,r){
+  return String(sablon).replace(/\{([a-z0-9]+)\}/gi,(m,k)=>r[k]==null?'':String(r[k]).trim()).replace(/\(\s*\)|\[\s*\]/g,'').replace(/\s+/g,' ').trim();
+}
+/* ORG: " > " ile ayrılmış birim yolu bileşenli yazılabilir (Kurum;Müdürlük;Birim) */
+function orgBilesenleri(org,o){
+  org=String(org||'').trim();
+  if(o.orgBilesen&&/\s>\s/.test(org))return org.split(/\s*>\s*/).filter(Boolean);
+  return org?[org]:[];
+}
+/* Telefon değeri: tel normalizasyonu yalnız ana numaralara; dahili ayrıca ele alınır */
+function telDeger(r,k,o){
+  let x=String(r[k]==null?'':r[k]).trim();
+  if(o.tel&&x){const n=telNorm(x);if(n.ok)x=n.v}
+  return x;
+}
+
+/* Tek kişi -> satır dizisi.
+   o: {bosAtla, fnYedek, ayir, tel, dahil:{alan:bool}, dahiliMod:'ayri'|'ekle', orgBilesen, dispSablon} */
 function vcfKart(r,v,o){
   const L=[],dahil=k=>!o.dahil||o.dahil[k]!==false;
   const metin=s=>v==='2.1'?qp(s):esc34(s);
   const tr=s=>String(s==null?'':s).trim();
-  const tel=k=>{let x=tr(r[k]);if(o.tel&&x){const n=telNorm(x);if(n.ok)x=n.v}return x};
   const ekle=(onek,deger,metinMi)=>{
     deger=tr(deger);
     if(deger===''&&o.bosAtla)return;
@@ -40,22 +57,41 @@ function vcfKart(r,v,o){
   if(o.ayir){const w=ad.split(/\s+/).filter(Boolean);aile=w.length>1?w.pop():'';veri=w.join(' ')}
   if(v==='2.1')L.push('N'+Q21+':'+qp(aile)+';'+qp(veri)+';;;');
   else L.push('N:'+esc34(aile)+';'+esc34(veri)+';;;');
-  // FN (3.0/4.0'da zorunlu)
-  const fn=disp||((o.fnYedek||v!=='2.1')?ad:'');
+  // FN (3.0/4.0'da zorunlu); şablon varsa görünen adı şablondan üretir
+  let fn=disp||((o.fnYedek||v!=='2.1')?ad:'');
+  if(o.dispSablon){const t=sablonUygula(o.dispSablon,r);if(t)fn=t}
   if(!(o.bosAtla&&!fn))L.push('FN'+(v==='2.1'&&fn?Q21:'')+':'+metin(fn));
-  TEL_ALANLARI.forEach(k=>{if(dahil(k))ekle(TEL_ONEK[v][k],tel(k),false)});
+  if(dahil('nick'))ekle('NICKNAME',r.nick,true);
+  // Telefonlar (+ dahili)
+  const ext=dahil('ext')?tr(r.ext):'';
+  TEL_ALANLARI.forEach(k=>{
+    if(!dahil(k))return;
+    let x=telDeger(r,k,o);
+    if(k==='work'&&ext&&o.dahiliMod==='ekle'&&x)x=x+','+ext;
+    ekle(TEL_ONEK[v][k],x,false);
+    if(k==='work'&&ext&&o.dahiliMod!=='ekle'&&x)ekle(TEL_ONEK[v].work,ext,false);   // dahili ayrı iş numarası
+  });
+  if(ext&&!(dahil('work')&&telDeger(r,'work',o)))ekle(TEL_ONEK[v].work,ext,false);  // ana numara yoksa dahili tek başına
   if(dahil('mail'))ekle(v==='2.1'?'EMAIL;PREF;INTERNET':v==='3.0'?'EMAIL;TYPE=INTERNET,PREF':'EMAIL',r.mail,false);
-  if(dahil('addr')){
-    const a=tr(r.addr);
-    if(!(o.bosAtla&&!a)){
+  if(dahil('mail2'))ekle(v==='2.1'?'EMAIL;INTERNET':v==='3.0'?'EMAIL;TYPE=INTERNET':'EMAIL',r.mail2,false);
+  // ADR: PO;ext;sokak;şehir;bölge;posta;ülke (bileşen bileşen kodlanır)
+  {
+    const sokak=dahil('addr')?tr(r.addr):'',sehir=dahil('city')?tr(r.city):'',posta=dahil('zip')?tr(r.zip):'';
+    if(!(o.bosAtla&&!sokak&&!sehir&&!posta)){
       const onek=v==='2.1'?'ADR;WORK':v==='3.0'?'ADR;TYPE=WORK':'ADR;TYPE=work';
-      L.push(onek+(v==='2.1'&&a?Q21:'')+':;;'+metin(a)+(v==='2.1'?'':';;;;'));
+      const dolu=sokak||sehir||posta;
+      L.push(onek+(v==='2.1'&&dolu?Q21:'')+':;;'+[sokak,sehir,'',posta,''].map(metin).join(';'));
     }
   }
-  if(dahil('org'))ekle('ORG',r.org,true);
+  if(dahil('org')){
+    const p=orgBilesenleri(r.org,o);
+    if(p.length)L.push('ORG'+(v==='2.1'?Q21:'')+':'+p.map(metin).join(';'));
+    else if(!o.bosAtla)L.push('ORG:');
+  }
   if(dahil('title'))ekle('TITLE',r.title,true);
   if(dahil('url'))ekle('URL',r.url,false);
   if(dahil('cat'))ekle('CATEGORIES',r.cat,true);
+  if(dahil('note'))ekle('NOTE',r.note,true);
   if(dahil('bday')&&/^\d{8}$/.test(r.bday)){
     L.push('BDAY:'+(v==='3.0'?r.bday.slice(0,4)+'-'+r.bday.slice(4,6)+'-'+r.bday.slice(6):r.bday));
   }
@@ -85,24 +121,32 @@ function vcfUret(satirlar,v,o){
 function vcfDogrula(satirlar,metin,o){
   const geri=vcfOku(metin);
   const kaynak=satirlar.filter(r=>String(r.name).trim()||String(r.disp).trim()||TEL_ALANLARI.some(k=>String(r[k]).trim())||String(r.mail).trim());
-  const sorun=[];
+  const sorun=[],dahil=k=>!(o.dahil&&o.dahil[k]===false);
   if(geri.length!==kaynak.length)sorun.push('Kişi sayısı uyuşmuyor: '+kaynak.length+' → '+geri.length);
   const n=Math.min(geri.length,kaynak.length);
   let tel=0,mail=0;
   for(let i=0;i<n;i++){
-    const a=kaynak[i],b=geri[i];
-    const ad=String(a.name).trim();
+    const a=kaynak[i],b=geri[i],t=x=>String(x==null?'':x).trim();
+    const ad=t(a.name);
     if(ad&&(!o.ayir)&&b.name!==ad)sorun.push('#'+(i+1)+' ad farklı: "'+ad+'" → "'+b.name+'"');
     TEL_ALANLARI.forEach(k=>{
-      if(o.dahil&&o.dahil[k]===false)return;
-      let x=String(a[k]).trim();if(o.tel&&x){const t=telNorm(x);if(t.ok)x=t.v}
+      if(!dahil(k))return;
+      const x=telDeger(a,k,o);
       if(x){tel++;if(b[k]!==x)sorun.push('#'+(i+1)+' '+k+' farklı: "'+x+'" → "'+b[k]+'"')}
     });
-    ['addr','org','title'].forEach(k=>{
-      const x=String(a[k]).trim();
-      if(x&&!(o.dahil&&o.dahil[k]===false)&&b[k]!==x)sorun.push('#'+(i+1)+' '+k+' farklı');
+    const ext=dahil('ext')?t(a.ext):'';
+    if(ext){
+      if(telDeger(a,'work',o)&&dahil('work')){if(b.ext!==ext)sorun.push('#'+(i+1)+' dahili farklı')}
+      else if(b.work!==ext)sorun.push('#'+(i+1)+' dahili (tek başına) farklı');
+    }
+    if(t(a.mail)&&dahil('mail')){mail++;if(b.mail!==t(a.mail))sorun.push('#'+(i+1)+' e-posta farklı')}
+    ['mail2','nick','note','city','zip','addr','title'].forEach(k=>{
+      if(t(a[k])&&dahil(k)&&b[k]!==t(a[k]))sorun.push('#'+(i+1)+' '+k+' farklı');
     });
-    if(String(a.mail).trim()&&!(o.dahil&&o.dahil.mail===false)){mail++;if(b.mail!==String(a.mail).trim())sorun.push('#'+(i+1)+' e-posta farklı')}
+    if(t(a.org)&&dahil('org')){
+      const bek=orgBilesenleri(a.org,o).join(' > ');
+      if(b.org!==bek)sorun.push('#'+(i+1)+' org farklı');
+    }
   }
   return {kisi:geri.length,tel,mail,sorun};
 }
