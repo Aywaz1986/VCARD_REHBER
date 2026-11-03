@@ -2,6 +2,16 @@
 
 ## Yayınlanmamış
 
+## 2.2.2 — 2026-11-03
+Fotoğraf aktarımı düzeltmeleri.
+
+### Düzeltildi
+- Özlük veritabanında fotoğraf **metin olarak** (base64 veya `data:image/...` URI) saklanıyorsa artık okunur; önceden yok sayılıp sütun metni "Foto" alanına yazılıyordu.
+- Okunamayan fotoğraflar sessizce atlanmaz: mesajda sayısı bildirilir.
+- Fotoğraf klasörü eşleştirmesi: Excel'de `ali.png` yazıp klasörde `ali.jpg` varsa artık eşleşir; eşleşmeyen adlar ve açılamayan dosyalar (HEIC/TIFF vb.) bildirilir.
+- Excel/Özlük'te fotoğraf dosya adı var ama resim yüklenmemişse "fotoğraf klasörünü seçin" uyarısı çıkar.
+- Test 11 (fotoğraf aktarımı).
+
 ## 2.2.1 — 2026-11-03
 Görsel yenileme (işlev değişmedi).
 

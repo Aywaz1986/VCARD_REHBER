@@ -29,7 +29,9 @@ function excelSayfaOku(ad){
     out.push(r);
   }
   const so=listeyeYaz(out,modOku(),true);
-  say('msgKaynak',out.length+' kişi okundu ("'+ad+'" sayfası).'+ayiklamaNotu(so)+(so.ayiklanan?' Listede '+D.satirlar.length+' kişi var.':''),'ok');
+  const fotoBekl=D.satirlar.filter(r=>r.photo&&!r._img).length;
+  say('msgKaynak',out.length+' kişi okundu ("'+ad+'" sayfası).'+ayiklamaNotu(so)+(so.ayiklanan?' Listede '+D.satirlar.length+' kişi var.':'')
+    +(fotoBekl?' '+fotoBekl+' kişide fotoğraf dosya adı var ama resim henüz yüklenmedi: "2. Liste" bölümünden "Fotoğraf klasörü seç" ile resimlerin bulunduğu klasörü seçin.':''),fotoBekl?'warn':'ok');
 }
 function sablonIndir(){
   const ws=XLSX.utils.aoa_to_sheet([

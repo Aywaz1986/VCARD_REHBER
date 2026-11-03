@@ -124,6 +124,15 @@ function eslesKayitSil(){
 }
 
 /* ----- kayıtları okuma ----- */
+/* Metin olarak saklanan fotoğraf (base64 veya data URI) -> Uint8Array; değilse null (dosya adı/yol sayılır) */
+function metinFotoBayt(v){
+  if(typeof v!=='string')return null;
+  let t=v.trim();const m=/^data:image\/[a-z0-9.+-]+;base64,/i.exec(t);
+  if(m)t=t.slice(m[0].length);
+  t=t.replace(/\s+/g,'');
+  if(t.length<200||!/^[A-Za-z0-9+/_-]+={0,2}$/.test(t))return null;
+  try{const b=atob(t.replace(/-/g,'+').replace(/_/g,'/'));const u=new Uint8Array(b.length);for(let i=0;i<b.length;i++)u[i]=b.charCodeAt(i);return u}catch(_){return null}
+}
 function mimeBul(b){
   if(b[0]===0xFF&&b[1]===0xD8)return 'image/jpeg';
   if(b[0]===0x89&&b[1]===0x50)return 'image/png';
@@ -169,9 +178,9 @@ async function sqliteYukle(){
       ALANLAR.forEach(a=>{
         const m=map[a.k];if(!m)return;
         let v;
-        if(a.k==='photo'&&m.col&&h[m.col] instanceof Uint8Array){
-          if(h[m.col].length)fotolar.push({i:satirlar.length,b:h[m.col]});
-          return;
+        if(a.k==='photo'&&m.col){
+          const bayt=(h[m.col] instanceof Uint8Array)?h[m.col]:metinFotoBayt(h[m.col]);
+          if(bayt){if(bayt.length)fotolar.push({i:satirlar.length,b:bayt});return}
         }
         if(m.sab&&(a.k!=='photo'||!m.col))v=m.sab.replace(/\{([^}]+)\}/g,(x,c)=>{const z=h[c.trim()];return z==null?'':String(z)}).replace(/\s+/g,' ').trim();
         else v=h[m.col];
@@ -182,16 +191,20 @@ async function sqliteYukle(){
     }
     st.free();
   }catch(e){say('msgKaynak','Sorgu hatası: '+e.message,'bad');return}
-  let fotoSay=0;
+  let fotoSay=0,fotoHata=0;
   for(let i=0;i<fotolar.length;i++){
     try{
       const f=fotolar[i];
       satirlar[f.i]._img=await toJpeg200(new Blob([f.b],{type:mimeBul(f.b)}));
       satirlar[f.i].photo='(veritabanı)';fotoSay++;
-    }catch(_){}
+    }catch(_){fotoHata++}
     if(i%20===0)say('msgKaynak','Fotoğraflar işleniyor… '+(i+1)+'/'+fotolar.length,'');
   }
   const so=listeyeYaz(satirlar,modOku(),true);
   $('sqSonuc').textContent=satirlar.length+' kayıt'+(fotoSay?', '+fotoSay+' fotoğraf':'');
-  say('msgKaynak',satirlar.length+' kayıt yüklendi ("'+tablo+'" tablosu).'+ayiklamaNotu(so),'ok');
+  const dosyaAdli=satirlar.filter(r=>r.photo&&!r._img&&r.photo!=='(veritabanı)').length;
+  say('msgKaynak',satirlar.length+' kayıt yüklendi ("'+tablo+'" tablosu).'+(fotoSay?' '+fotoSay+' fotoğraf alındı.':'')
+    +(fotoHata?' '+fotoHata+' fotoğraf okunamadı (bozuk veya desteklenmeyen biçim).':'')
+    +(dosyaAdli?' '+dosyaAdli+' kişide yalnızca fotoğraf dosya adı var; fotoğraf klasörünü "2. Liste" bölümünden seçin.':'')
+    +ayiklamaNotu(so),(fotoHata||dosyaAdli)?'warn':'ok');
 }

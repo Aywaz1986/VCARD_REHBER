@@ -25,3 +25,4 @@ Ek gereksinim (09): pip install opencv-python-headless numpy
 
 Yeni özellik eklerken: yeni/uzatılmış test + bu tabloya satır.
 10_harita_ve_ayiklama.py          Adres → Google Haritalar bağlantısı (vCard 2.1/3.0/4.0, 📍, QR, geri okuma), CSV yüklerken otomatik mükerrer ayıklama, geri al
+11_foto_aktarimi.py              Özlük BLOB/base64/data URI fotoğraf, Excel dosya adı uyarısı, klasörden eşleştirme (uzantı farkı), vCard PHOTO satırları

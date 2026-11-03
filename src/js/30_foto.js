@@ -24,16 +24,19 @@ async function fotoTopluEsle(dosyalar){
     adMap.set(f.name.toLowerCase(),f);
     stemMap.set(anahtar(uzantisiz(f.name)),f);
   });
-  let ok=0;
+  let ok=0,hata=0,eslesmeyen=0;
   for(let i=0;i<D.satirlar.length;i++){
     const r=D.satirlar[i];
     let f=r.photo&&adMap.get(dosyaAdi(r.photo).toLowerCase());
+    if(!f&&r.photo&&r.photo!=='(vcf)'&&r.photo!=='(veritabanı)')f=stemMap.get(anahtar(uzantisiz(dosyaAdi(r.photo)))); // uzantı farklıysa (ali.jpg ↔ ali.png)
     if(!f&&r.name)f=stemMap.get(anahtar(r.name));
     if(!f&&r.disp)f=stemMap.get(anahtar(r.disp));
-    if(!f)continue;
-    try{r._img=await toJpeg200(f);if(!r.photo)r.photo=f.name;ok++}catch(_){}
+    if(!f){if(r.photo&&!r._img)eslesmeyen++;continue}
+    try{r._img=await toJpeg200(f);if(!r.photo)r.photo=f.name;ok++}catch(_){hata++}
     if(ok%20===0)say('msgKaynak','Fotoğraflar işleniyor… '+ok,'');
   }
   tabloCiz();otoSaklaYaz();
-  say('msgKaynak',ok+' fotoğraf eşleşti ('+dosyalar.length+' dosya seçildi).',ok?'ok':'warn');
+  say('msgKaynak',ok+' fotoğraf eşleşti ('+dosyalar.length+' dosya seçildi).'
+    +(eslesmeyen?' '+eslesmeyen+' kişinin fotoğraf adı seçilen dosyalarda bulunamadı.':'')
+    +(hata?' '+hata+' dosya açılamadı (HEIC/TIFF gibi tarayıcının okuyamadığı biçimler olabilir; JPG/PNG\'ye çevirin).':''),(ok&&!eslesmeyen&&!hata)?'ok':'warn');
 }
