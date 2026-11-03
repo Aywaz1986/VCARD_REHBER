@@ -1,6 +1,6 @@
 /* ===== 70 Arayüz bağlantıları ===== */
 function arayuzKur(){
-  $('surum').textContent='v'+APP_SURUM;
+  $('surum').textContent='v'+APP_SURUM;$('surumAlt').textContent='v'+APP_SURUM;
   dahilListeKur();tabloOlaylari();tabloCiz();grupListesiYenile();
 
   // kaynak sekmeleri

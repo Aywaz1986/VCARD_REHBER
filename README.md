@@ -1,8 +1,8 @@
-# VCARD Rehber Hazırlama (v2.2.0)
+# VCARD Rehber Hazırlama (v2.2.1)
 
 Excel/CSV, **Özlük (SQLite) veritabanı**, mevcut `.vcf` veya JSON yedeğinden telefon rehberine aktarılabilir **.vcf** (vCard 2.1 / 3.0 / 4.0) üreten, tek dosya, çevrimdışı çalışan tarayıcı aracı. Eski "vcard rehber hazırlama-doğum tarihli.xlsm" (VBA) aracının HTML karşılığıdır ve onun üzerine geliştirilmiştir.
 
-- Çalıştırılabilir dosya: `dist/VCARD_Rehber_Hazirla-2.2.0.html` (çift tıklayıp Edge/Chrome'da açın; kurulum, sunucu, internet gerekmez).
+- Çalıştırılabilir dosya: `dist/VCARD_Rehber_Hazirla-2.2.1.html` (çift tıklayıp Edge/Chrome'da açın; kurulum, sunucu, internet gerekmez).
 - Veri tarayıcıdan dışarı çıkmaz. Hiçbir çalışma zamanı bağımlılığı yoktur (kütüphaneler dosyaya gömülüdür).
 
 > **Bu dosya oturumlar arası hafıza işlevi görür. İlk okunacak dosya budur.** Modülü aşağıdaki tablolardan bulun; tüm dosyayı okumayın.
@@ -44,7 +44,7 @@ VCARD_REHBER/
 ├── CLAUDE.md                  Claude oturumları için kısa yönlendirme
 ├── build.py                   derleme betiği (src/ -> tek dosya HTML)
 ├── dist/
-│   └── VCARD_Rehber_Hazirla-2.2.0.html   derlenmiş, çalışan uygulama
+│   └── VCARD_Rehber_Hazirla-2.2.1.html   derlenmiş, çalışan uygulama
 ├── src/
 │   ├── index.template.html    sayfa iskeleti ({{INCLUDE:...}} işaretleri)
 │   ├── html/                  6 HTML parçası (ekran bölümleri + QR penceresi)

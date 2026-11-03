@@ -5,63 +5,98 @@
 <meta name="viewport" content="width=device-width,initial-scale=1">
 <title>VCARD Rehber Hazırlama</title>
 <style>
-:root{--bg:#f4f6f9;--card:#fff;--ink:#1d2433;--mut:#667085;--line:#dfe3ea;--acc:#2563eb;--acc2:#1d4ed8;--ok:#16794a;--warn:#b45309;--bad:#b91c1c;--fontsize:14px}
-@media (prefers-color-scheme:dark){:root{--bg:#12151c;--card:#1a1f2b;--ink:#e6e9f0;--mut:#98a2b3;--line:#2b3242;--acc:#5b8def;--acc2:#7ba2f5;--ok:#4ade80;--warn:#fbbf24;--bad:#f87171}}
+:root{--bg:#f1f4f9;--card:#fff;--ink:#1b2333;--mut:#64708a;--line:#e1e6ef;--soft:#f6f8fc;--acc:#2f5bea;--acc2:#2347c4;--acc-soft:#e8eeff;--ok:#16794a;--warn:#b45309;--bad:#c0262d;--gol:0 1px 2px rgba(20,30,60,.06),0 4px 14px rgba(20,30,60,.06);--r:12px;--fontsize:14px}
+@media (prefers-color-scheme:dark){:root{--bg:#0f131b;--card:#181d29;--ink:#e8ebf2;--mut:#9aa5bd;--line:#2a3142;--soft:#1e2433;--acc:#6b93f5;--acc2:#8aaaf8;--acc-soft:#232d4d;--ok:#4ade80;--warn:#fbbf24;--bad:#f87171;--gol:0 1px 2px rgba(0,0,0,.4),0 4px 16px rgba(0,0,0,.35)}}
 *{box-sizing:border-box}
-body{margin:0;background:var(--bg);color:var(--ink);font:var(--fontsize)/1.45 "Segoe UI",system-ui,sans-serif}
-header{padding:18px 24px 6px}
-h1{margin:0;font-size:calc(var(--fontsize)*1.45)}
-h1 small{font-weight:400;font-size:calc(var(--fontsize)*.85)}
-h3{margin:14px 0 8px;font-size:calc(var(--fontsize)*1.02)}
-header p{margin:4px 0 0;color:var(--mut)}
-main{padding:12px 24px 40px;display:grid;gap:14px}
-.card{background:var(--card);border:1px solid var(--line);border-radius:10px;padding:14px 16px}
-.card h2{margin:0 0 10px;font-size:calc(var(--fontsize)*1.08)}
+html{scroll-behavior:smooth;scroll-padding-top:64px}
+body{margin:0;background:var(--bg);color:var(--ink);font:var(--fontsize)/1.5 "Segoe UI Variable","Segoe UI",system-ui,sans-serif;-webkit-font-smoothing:antialiased}
+.ust{background:linear-gradient(120deg,#1e3fa8 0%,#2f5bea 55%,#4b7bff 100%);color:#fff;position:relative}
+.ust-ic{max-width:1280px;margin:0 auto;padding:20px 28px 14px;display:flex;gap:16px;align-items:center;flex-wrap:wrap}
+.logo{width:54px;height:54px;border-radius:14px;background:rgba(255,255,255,.16);display:grid;place-items:center;box-shadow:inset 0 0 0 1px rgba(255,255,255,.25)}
+.ust-metin{flex:1;min-width:260px}
+h1{margin:0;font-size:calc(var(--fontsize)*1.6);font-weight:650;letter-spacing:-.01em}
+h1 small{font-weight:500;font-size:calc(var(--fontsize)*.8);background:rgba(255,255,255,.2);padding:2px 9px;border-radius:99px;margin-left:8px;vertical-align:middle}
+.ust p{margin:4px 0 0;color:rgba(255,255,255,.86)}
+.gizlilik{font-size:calc(var(--fontsize)*.86);background:rgba(255,255,255,.14);border:1px solid rgba(255,255,255,.28);padding:6px 12px;border-radius:99px;white-space:nowrap}
+.adimlar{list-style:none;margin:0 auto;padding:0 28px 14px;max-width:1280px;display:flex;gap:8px;flex-wrap:wrap}
+.adimlar a{display:flex;gap:8px;align-items:center;color:#fff;text-decoration:none;font-weight:500;background:rgba(255,255,255,.12);padding:6px 14px 6px 8px;border-radius:99px;border:1px solid rgba(255,255,255,.2);transition:background .15s}
+.adimlar a:hover{background:rgba(255,255,255,.26)}
+.adimlar b{display:grid;place-items:center;width:22px;height:22px;border-radius:50%;background:#fff;color:var(--acc2);font-size:12px}
+h3{margin:18px 0 8px;font-size:calc(var(--fontsize)*1.02);font-weight:650}
+main{max-width:1280px;margin:0 auto;padding:20px 28px 28px;display:grid;grid-template-columns:minmax(0,1fr);gap:18px}
+.card{min-width:0}
+html,body{overflow-x:hidden}
+.card{background:var(--card);border:1px solid var(--line);border-radius:var(--r);padding:18px 20px;box-shadow:var(--gol)}
+.card h2{margin:0 0 14px;font-size:calc(var(--fontsize)*1.2);font-weight:650;display:flex;align-items:center;gap:10px}
+.adim{display:grid;place-items:center;width:28px;height:28px;border-radius:9px;background:var(--acc);color:#fff;font-size:calc(var(--fontsize)*.95);font-weight:700;flex:none}
+.card h2 .mut{font-size:calc(var(--fontsize)*.85);font-weight:500;background:var(--soft);padding:2px 10px;border-radius:99px;border:1px solid var(--line)}
 .row{display:flex;flex-wrap:wrap;gap:10px;align-items:center}
 .row.center{justify-content:center}
 .grow{flex:1}
 .mut{color:var(--mut)}
-.hint{font-size:calc(var(--fontsize)*.86);color:var(--mut)}
+.hint{font-size:calc(var(--fontsize)*.88);color:var(--mut)}
 ol{margin:6px 0 0 18px;padding:0}
-pre{margin:10px 0 0;background:var(--bg);border:1px solid var(--line);border-radius:8px;padding:10px;max-height:340px;overflow:auto;font:12px/1.4 Consolas,monospace;white-space:pre-wrap;word-break:break-all}
+code{background:var(--soft);border:1px solid var(--line);border-radius:5px;padding:0 5px;font-size:.92em}
+pre{margin:12px 0 0;background:var(--soft);border:1px solid var(--line);border-radius:10px;padding:12px;max-height:340px;overflow:auto;font:12px/1.45 Consolas,monospace;white-space:pre-wrap;word-break:break-all}
 .msg{min-height:20px}
 .ok{color:var(--ok)}.warn{color:var(--warn)}.bad{color:var(--bad)}
 [hidden]{display:none!important}
-button,.btn{font:inherit;border:1px solid var(--line);background:var(--card);color:var(--ink);padding:7px 12px;border-radius:7px;cursor:pointer}
-button:hover:not(:disabled),.btn:hover{border-color:var(--acc)}
-button:disabled{opacity:.5;cursor:not-allowed}
-.pri{background:var(--acc);border-color:var(--acc);color:#fff;font-weight:600}
-.pri:hover:not(:disabled){background:var(--acc2)}
-.dng:hover:not(:disabled){border-color:var(--bad);color:var(--bad)}
-select,input[type=text],input[type=search]{font:inherit;padding:6px 8px;border:1px solid var(--line);border-radius:7px;background:var(--bg);color:var(--ink)}
-label.chk{display:flex;gap:6px;align-items:center;cursor:pointer}
-.tabs{border-bottom:1px solid var(--line);padding-bottom:10px;margin-bottom:10px}
-.tabs button.on{background:var(--acc);border-color:var(--acc);color:#fff}
-#drop{border:2px dashed var(--line);border-radius:10px;padding:16px;text-align:center;color:var(--mut)}
-#drop.over{border-color:var(--acc);background:color-mix(in srgb,var(--acc) 8%,transparent)}
-fieldset.dahil{border:1px solid var(--line);border-radius:8px;margin:12px 0 0;padding:8px 12px}
-fieldset.dahil legend{padding:0 6px;font-size:calc(var(--fontsize)*.9)}
-.sorun{display:flex;gap:8px;align-items:baseline;padding:3px 0;border-bottom:1px dashed var(--line)}
+.alt{text-align:center;color:var(--mut);font-size:calc(var(--fontsize)*.86);padding:8px 20px 28px}
+@media (max-width:700px){.ust-ic,.adimlar,main{padding-left:14px;padding-right:14px}.gizlilik{white-space:normal}}
+button,.btn{font:inherit;border:1px solid var(--line);background:var(--card);color:var(--ink);padding:7px 14px;border-radius:9px;cursor:pointer;transition:border-color .15s,background .15s,box-shadow .15s,transform .05s;box-shadow:0 1px 1px rgba(20,30,60,.04)}
+button:hover:not(:disabled),.btn:hover{border-color:var(--acc);background:var(--acc-soft)}
+button:active:not(:disabled),.btn:active{transform:translateY(1px)}
+button:focus-visible,.btn:focus-within,select:focus-visible,input:focus-visible{outline:2px solid var(--acc);outline-offset:1px}
+button:disabled{opacity:.45;cursor:not-allowed}
+.pri{background:linear-gradient(180deg,var(--acc),var(--acc2));border-color:var(--acc2);color:#fff;font-weight:600;box-shadow:0 2px 6px rgba(47,91,234,.3)}
+.pri:hover:not(:disabled){background:linear-gradient(180deg,var(--acc2),var(--acc2));border-color:var(--acc2)}
+.dng:hover:not(:disabled){border-color:var(--bad);color:var(--bad);background:color-mix(in srgb,var(--bad) 8%,transparent)}
+select,input[type=text],input[type=search]{font:inherit;padding:7px 10px;border:1px solid var(--line);border-radius:9px;background:var(--soft);color:var(--ink);transition:border-color .15s,box-shadow .15s}
+select:focus,input[type=text]:focus,input[type=search]:focus{border-color:var(--acc);box-shadow:0 0 0 3px color-mix(in srgb,var(--acc) 20%,transparent);outline:none}
+input[type=checkbox]{accent-color:var(--acc);width:15px;height:15px}
+label.chk{display:flex;gap:7px;align-items:center;cursor:pointer}
+.tabs{border-bottom:0;padding:4px;margin-bottom:14px;background:var(--soft);border:1px solid var(--line);border-radius:12px;gap:4px}
+.tabs button{border-color:transparent;background:transparent;box-shadow:none;color:var(--mut);font-weight:500}
+.tabs button:hover:not(.on){background:var(--card);border-color:var(--line);color:var(--ink)}
+.tabs button.on{background:var(--card);border-color:var(--line);color:var(--acc);font-weight:650;box-shadow:var(--gol)}
+.pane{animation:gir .18s ease}
+@keyframes gir{from{opacity:0;transform:translateY(3px)}to{opacity:1;transform:none}}
+#drop{border:2px dashed color-mix(in srgb,var(--acc) 35%,var(--line));border-radius:14px;padding:26px 16px;text-align:center;color:var(--mut);background:var(--soft);transition:border-color .15s,background .15s}
+.drop-ikon{width:46px;height:46px;margin:0 auto 8px;border-radius:50%;background:var(--acc-soft);color:var(--acc);display:grid;place-items:center;font-size:22px;font-weight:700}
+#drop.over{border-color:var(--acc);background:var(--acc-soft)}
+fieldset.dahil{border:1px solid var(--line);border-radius:12px;margin:16px 0 0;padding:10px 14px;background:var(--soft)}
+fieldset.dahil legend{padding:0 8px;font-size:calc(var(--fontsize)*.92);font-weight:600}
+.sorun{display:flex;gap:10px;align-items:baseline;padding:6px 8px;border-bottom:1px solid var(--line);border-radius:6px}
+.sorun:hover{background:var(--soft)}
 .sorun b{min-width:48px}
-.sorun button{padding:1px 8px;font-size:12px}
-.grup{border:1px solid var(--line);border-radius:8px;padding:6px 10px;margin:6px 0}
-.pager{margin-top:8px}
-.tw{overflow:auto;max-height:55vh;border:1px solid var(--line);border-radius:8px}
-table{border-collapse:collapse;width:max-content;min-width:100%}
+.sorun button{padding:1px 10px;font-size:12px}
+.grup{border:1px solid var(--line);border-radius:10px;padding:8px 12px;margin:8px 0;background:var(--soft)}
+.pager{margin-top:10px}
+.msg:not(:empty){padding:2px 0}
+#dogrulaSonuc:not(:empty){background:var(--soft);border:1px solid var(--line);border-left:4px solid var(--acc);border-radius:8px;padding:8px 12px;margin-top:10px}
+dialog{box-shadow:0 20px 60px rgba(0,0,0,.35)}
+.tw{overflow:auto;max-height:55vh;border:1px solid var(--line);border-radius:12px}
+table{border-collapse:separate;border-spacing:0;width:max-content;min-width:100%}
 th,td{border-bottom:1px solid var(--line);border-right:1px solid var(--line);padding:0;white-space:nowrap}
-th{position:sticky;top:0;background:var(--card);padding:6px 8px;text-align:left;font-size:calc(var(--fontsize)*.86);z-index:2}
-td input{border:0;background:transparent;color:var(--ink);font:inherit;padding:6px 8px;width:150px;outline:none}
-td input:focus{background:color-mix(in srgb,var(--acc) 10%,transparent)}
-td.n{padding:4px 8px;color:var(--mut);text-align:right;position:sticky;left:0;background:var(--card)}
-td.ph{padding:3px 6px;min-width:130px}
-td.ph img{width:28px;height:28px;object-fit:cover;border-radius:4px;vertical-align:middle;margin-right:6px}
+th:last-child,td:last-child{border-right:0}
+th{position:sticky;top:0;background:var(--soft);padding:9px 10px;text-align:left;font-size:calc(var(--fontsize)*.8);text-transform:uppercase;letter-spacing:.04em;color:var(--mut);font-weight:650;z-index:2}
+tbody tr:nth-child(even) td{background:color-mix(in srgb,var(--soft) 55%,var(--card))}
+tbody tr:hover td{background:var(--acc-soft)}
+td input{border:0;background:transparent;color:var(--ink);font:inherit;padding:8px 10px;width:150px;outline:none}
+td input:focus{background:color-mix(in srgb,var(--acc) 12%,var(--card));box-shadow:inset 0 0 0 2px var(--acc)}
+td.n{padding:4px 10px;color:var(--mut);text-align:right;position:sticky;left:0;background:var(--soft)!important;font-variant-numeric:tabular-nums;z-index:1}
+td.ph{padding:3px 8px;min-width:130px}
+td.ph img{width:30px;height:30px;object-fit:cover;border-radius:50%;vertical-align:middle;margin-right:6px;border:1px solid var(--line)}
 td.ph .fn{font-size:calc(var(--fontsize)*.8);color:var(--mut);max-width:100px;overflow:hidden;text-overflow:ellipsis;display:inline-block;vertical-align:middle}
-td.ph button{padding:2px 6px;font-size:12px}
+td.ph button,td button{padding:2px 7px;font-size:12px;border-radius:7px}
 td.err input{background:color-mix(in srgb,var(--bad) 14%,transparent)}
-tr.flash td{background:color-mix(in srgb,var(--warn) 25%,transparent)}
-#eslesGrid{display:grid;grid-template-columns:minmax(150px,200px) minmax(180px,260px) minmax(200px,1fr);gap:6px 10px;align-items:center;margin:10px 0}
-#eslesGrid .h{font-weight:600;font-size:calc(var(--fontsize)*.86);color:var(--mut)}
+tr.flash td{background:color-mix(in srgb,var(--warn) 25%,transparent)!important}
+#eslesGrid{display:grid;grid-template-columns:minmax(150px,200px) minmax(180px,260px) minmax(200px,1fr);gap:8px 12px;align-items:center;margin:12px 0;padding:12px;background:var(--soft);border:1px solid var(--line);border-radius:12px}
+#eslesGrid .h{font-weight:650;font-size:calc(var(--fontsize)*.82);text-transform:uppercase;letter-spacing:.04em;color:var(--mut)}
 #eslesGrid select,#eslesGrid input{width:100%}
+#qrDlg{border:1px solid var(--line);border-radius:16px;background:var(--card);color:var(--ink);padding:20px 24px;text-align:center;max-width:420px}
+#qrDlg::backdrop{background:rgba(10,15,30,.55);backdrop-filter:blur(2px)}
+#qrDlg canvas{width:260px;height:260px;image-rendering:pixelated;border:1px solid var(--line);border-radius:10px;background:#fff;padding:8px}
 #qrDlg{border:1px solid var(--line);border-radius:12px;background:var(--card);color:var(--ink);padding:16px 20px;text-align:center;max-width:420px}
 #qrDlg::backdrop{background:rgba(0,0,0,.45)}
 #qrDlg canvas{width:260px;height:260px;image-rendering:pixelated;border:1px solid var(--line)}
@@ -79,14 +114,26 @@ tr.flash td{background:color-mix(in srgb,var(--warn) 25%,transparent)}
 }
 </style>
 </head>
-<body data-surum="2.2.0">
-<header>
-  <h1>VCARD Rehber Hazırlama <small id="surum" class="mut"></small></h1>
-  <p>Excel, CSV, Özlük (SQLite) veritabanı veya mevcut .vcf dosyasından telefon rehberine aktarılabilir <b>.vcf</b> üretir. Tamamen tarayıcıda çalışır; veri dışarı gönderilmez.</p>
+<body data-surum="2.2.1">
+<header class="ust">
+  <div class="ust-ic">
+    <div class="logo" aria-hidden="true"><svg viewBox="0 0 32 32" width="30" height="30"><rect x="3" y="5" width="26" height="22" rx="4" fill="none" stroke="currentColor" stroke-width="2"/><circle cx="12" cy="14" r="3.2" fill="currentColor"/><path d="M6.5 23c.8-3 3-4.4 5.5-4.4s4.7 1.4 5.5 4.4" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"/><path d="M21 12h5M21 16h5M21 20h3" stroke="currentColor" stroke-width="2" stroke-linecap="round"/></svg></div>
+    <div class="ust-metin">
+      <h1>VCARD Rehber Hazırlama <small id="surum"></small></h1>
+      <p>Excel, CSV, Özlük (SQLite) veya mevcut .vcf dosyasından telefon rehberine aktarılabilir <b>.vcf</b> üretir.</p>
+    </div>
+    <div class="gizlilik" title="Hiçbir veri sunucuya gönderilmez">🔒 Çevrimdışı çalışır · veri cihazınızda kalır</div>
+  </div>
+  <ol class="adimlar" aria-label="Adımlar">
+    <li><a href="#kartKaynak"><b>1</b> Veri kaynağı</a></li>
+    <li><a href="#kartListe"><b>2</b> Liste</a></li>
+    <li><a href="#kartKontrol"><b>3</b> Kontrol</a></li>
+    <li><a href="#kartCikti"><b>4</b> Çıktı</a></li>
+  </ol>
 </header>
 <main>
 <section class="card" id="kartKaynak">
-  <h2>1. Veri kaynağı</h2>
+  <h2><span class="adim">1</span>Veri kaynağı</h2>
   <div class="row tabs" id="kaynakSekme">
     <button data-kaynak="excel" class="on">Excel / CSV</button>
     <button data-kaynak="sqlite">Özlük veritabanı (SQLite)</button>
@@ -101,6 +148,7 @@ tr.flash td{background:color-mix(in srgb,var(--warn) 25%,transparent)}
 
   <div class="pane" data-pane="excel">
     <div id="drop">
+      <div class="drop-ikon" aria-hidden="true">⬆</div>
       Excel (.xlsx, .xlsm, .xls) veya CSV dosyasını buraya sürükleyin
       <div class="row center" style="margin-top:8px">
         <label class="btn pri">Dosya seç<input id="fileExcel" type="file" accept=".xlsx,.xlsm,.xls,.csv" hidden></label>
@@ -170,7 +218,7 @@ tr.flash td{background:color-mix(in srgb,var(--warn) 25%,transparent)}
   <div class="row"><span id="msgKaynak" class="msg"></span><button id="mukGeriAl" hidden>Ayıklamayı geri al</button></div>
 </section>
 <section class="card" id="kartListe">
-  <h2>2. Liste <span id="cnt" class="mut"></span></h2>
+  <h2><span class="adim">2</span>Liste <span id="cnt" class="mut"></span></h2>
   <div class="row" style="margin-bottom:8px">
     <input id="q" type="search" placeholder="Ara..." style="min-width:220px">
     <button id="addBtn">+ Satır ekle</button>
@@ -191,7 +239,7 @@ tr.flash td{background:color-mix(in srgb,var(--warn) 25%,transparent)}
   </div>
 </section>
 <section class="card" id="kartKontrol">
-  <h2>3. Kontrol <span id="kontrolOzet" class="mut"></span></h2>
+  <h2><span class="adim">3</span>Kontrol <span id="kontrolOzet" class="mut"></span></h2>
   <div class="row">
     <button id="kontrolBtn" class="pri">Listeyi denetle</button>
     <button id="telDuzelt">Telefonları +90 biçimine düzelt</button>
@@ -228,7 +276,7 @@ tr.flash td{background:color-mix(in srgb,var(--warn) 25%,transparent)}
   <div id="duzSonuc"></div>
 </section>
 <section class="card" id="kartCikti">
-  <h2>4. Ayarlar ve çıktı</h2>
+  <h2><span class="adim">4</span>Ayarlar ve çıktı</h2>
   <div class="row">
     <label>vCard sürümü
       <select id="ver">
@@ -296,6 +344,7 @@ tr.flash td{background:color-mix(in srgb,var(--warn) 25%,transparent)}
   </ol>
 </section>
 </main>
+<footer class="alt">VCARD Rehber Hazırlama <span id="surumAlt"></span> · Tamamen tarayıcıda çalışır, veri dışarı gönderilmez.</footer>
 <dialog id="qrDlg">
   <h3 id="qrBaslik" style="margin-top:0"></h3>
   <canvas id="qrCanvas"></canvas>
@@ -2828,7 +2877,7 @@ window.SQLWASM_B64='AGFzbQEAAAABoARFYAJ/fwF/YAF/AX9gA39/fwBgA39/fwF/YAF/AGACf38A
 'use strict';
 /* ===== VCARD Rehber Hazırlama — modüller bu IIFE içinde birleşir (bkz. build.py) ===== */
 /* ===== 01 Sabitler ===== */
-const APP_SURUM='2.2.0';
+const APP_SURUM='2.2.1';
 
 /* Alan tanımları: sıra, Excel sütun sırası ile aynıdır (eski makro uyumu). */
 const ALANLAR=[
@@ -4155,7 +4204,7 @@ function otoSaklaOku(){
 }
 /* ===== 70 Arayüz bağlantıları ===== */
 function arayuzKur(){
-  $('surum').textContent='v'+APP_SURUM;
+  $('surum').textContent='v'+APP_SURUM;$('surumAlt').textContent='v'+APP_SURUM;
   dahilListeKur();tabloOlaylari();tabloCiz();grupListesiYenile();
 
   // kaynak sekmeleri

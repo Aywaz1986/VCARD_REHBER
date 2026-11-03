@@ -2,6 +2,15 @@
 
 ## Yayınlanmamış
 
+## 2.2.1 — 2026-11-03
+Görsel yenileme (işlev değişmedi).
+
+### Değişti
+- Gradyanlı başlık bandı, logo, sürüm rozeti, "çevrimdışı çalışır" göstergesi ve adım gezinmesi (1–4).
+- Numaralı adım rozetli, gölgeli kartlar; segment biçiminde veri kaynağı sekmeleri; yeniden tasarlanmış sürükle-bırak alanı.
+- Tablo: yapışkan büyük harfli başlık, şeritli satırlar, üzerine gelince vurgu, yuvarlak fotoğraf küçük resmi.
+- Düğme, giriş alanı, odak halkası ve koyu tema renkleri yenilendi; alt bilgi eklendi; geniş tablo sayfayı yatay taşırmaz.
+
 ## 2.2.0 — 2026-11-03
 Adres → harita bağlantısı ve yüklerken otomatik mükerrer ayıklama.
 

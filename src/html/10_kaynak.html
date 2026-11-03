@@ -1,5 +1,5 @@
 <section class="card" id="kartKaynak">
-  <h2>1. Veri kaynağı</h2>
+  <h2><span class="adim">1</span>Veri kaynağı</h2>
   <div class="row tabs" id="kaynakSekme">
     <button data-kaynak="excel" class="on">Excel / CSV</button>
     <button data-kaynak="sqlite">Özlük veritabanı (SQLite)</button>
@@ -14,6 +14,7 @@
 
   <div class="pane" data-pane="excel">
     <div id="drop">
+      <div class="drop-ikon" aria-hidden="true">⬆</div>
       Excel (.xlsx, .xlsm, .xls) veya CSV dosyasını buraya sürükleyin
       <div class="row center" style="margin-top:8px">
         <label class="btn pri">Dosya seç<input id="fileExcel" type="file" accept=".xlsx,.xlsm,.xls,.csv" hidden></label>

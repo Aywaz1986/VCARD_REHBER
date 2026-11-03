@@ -1,3 +1,6 @@
-#eslesGrid{display:grid;grid-template-columns:minmax(150px,200px) minmax(180px,260px) minmax(200px,1fr);gap:6px 10px;align-items:center;margin:10px 0}
-#eslesGrid .h{font-weight:600;font-size:calc(var(--fontsize)*.86);color:var(--mut)}
+#eslesGrid{display:grid;grid-template-columns:minmax(150px,200px) minmax(180px,260px) minmax(200px,1fr);gap:8px 12px;align-items:center;margin:12px 0;padding:12px;background:var(--soft);border:1px solid var(--line);border-radius:12px}
+#eslesGrid .h{font-weight:650;font-size:calc(var(--fontsize)*.82);text-transform:uppercase;letter-spacing:.04em;color:var(--mut)}
 #eslesGrid select,#eslesGrid input{width:100%}
+#qrDlg{border:1px solid var(--line);border-radius:16px;background:var(--card);color:var(--ink);padding:20px 24px;text-align:center;max-width:420px}
+#qrDlg::backdrop{background:rgba(10,15,30,.55);backdrop-filter:blur(2px)}
+#qrDlg canvas{width:260px;height:260px;image-rendering:pixelated;border:1px solid var(--line);border-radius:10px;background:#fff;padding:8px}

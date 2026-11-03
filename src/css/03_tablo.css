@@ -1,13 +1,16 @@
-.tw{overflow:auto;max-height:55vh;border:1px solid var(--line);border-radius:8px}
-table{border-collapse:collapse;width:max-content;min-width:100%}
+.tw{overflow:auto;max-height:55vh;border:1px solid var(--line);border-radius:12px}
+table{border-collapse:separate;border-spacing:0;width:max-content;min-width:100%}
 th,td{border-bottom:1px solid var(--line);border-right:1px solid var(--line);padding:0;white-space:nowrap}
-th{position:sticky;top:0;background:var(--card);padding:6px 8px;text-align:left;font-size:calc(var(--fontsize)*.86);z-index:2}
-td input{border:0;background:transparent;color:var(--ink);font:inherit;padding:6px 8px;width:150px;outline:none}
-td input:focus{background:color-mix(in srgb,var(--acc) 10%,transparent)}
-td.n{padding:4px 8px;color:var(--mut);text-align:right;position:sticky;left:0;background:var(--card)}
-td.ph{padding:3px 6px;min-width:130px}
-td.ph img{width:28px;height:28px;object-fit:cover;border-radius:4px;vertical-align:middle;margin-right:6px}
+th:last-child,td:last-child{border-right:0}
+th{position:sticky;top:0;background:var(--soft);padding:9px 10px;text-align:left;font-size:calc(var(--fontsize)*.8);text-transform:uppercase;letter-spacing:.04em;color:var(--mut);font-weight:650;z-index:2}
+tbody tr:nth-child(even) td{background:color-mix(in srgb,var(--soft) 55%,var(--card))}
+tbody tr:hover td{background:var(--acc-soft)}
+td input{border:0;background:transparent;color:var(--ink);font:inherit;padding:8px 10px;width:150px;outline:none}
+td input:focus{background:color-mix(in srgb,var(--acc) 12%,var(--card));box-shadow:inset 0 0 0 2px var(--acc)}
+td.n{padding:4px 10px;color:var(--mut);text-align:right;position:sticky;left:0;background:var(--soft)!important;font-variant-numeric:tabular-nums;z-index:1}
+td.ph{padding:3px 8px;min-width:130px}
+td.ph img{width:30px;height:30px;object-fit:cover;border-radius:50%;vertical-align:middle;margin-right:6px;border:1px solid var(--line)}
 td.ph .fn{font-size:calc(var(--fontsize)*.8);color:var(--mut);max-width:100px;overflow:hidden;text-overflow:ellipsis;display:inline-block;vertical-align:middle}
-td.ph button{padding:2px 6px;font-size:12px}
+td.ph button,td button{padding:2px 7px;font-size:12px;border-radius:7px}
 td.err input{background:color-mix(in srgb,var(--bad) 14%,transparent)}
-tr.flash td{background:color-mix(in srgb,var(--warn) 25%,transparent)}
+tr.flash td{background:color-mix(in srgb,var(--warn) 25%,transparent)!important}

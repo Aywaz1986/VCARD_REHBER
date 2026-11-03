@@ -1,5 +1,5 @@
 /* ===== 01 Sabitler ===== */
-const APP_SURUM='2.2.0';
+const APP_SURUM='2.2.1';
 
 /* Alan tanımları: sıra, Excel sütun sırası ile aynıdır (eski makro uyumu). */
 const ALANLAR=[
