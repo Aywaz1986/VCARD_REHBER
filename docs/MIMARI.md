@@ -123,3 +123,7 @@ sequenceDiagram
 | `vcard.eslesme.v1` | Kayıtlı alan eşleştirmeleri `{ad:{tablo,map}}` (yalnız sütun adları, veri yok) |
 | `vcard.sozluk.v1` | Unvan/kurum sözlüğü metni |
 | `vcard.calisma.v1` | Yalnızca "Çalışmayı bu tarayıcıda sakla" işaretliyse: fotoğrafsız kişi listesi |
+
+## Harita bağlantısı ve otomatik ayıklama (v2.2)
+- **Harita:** `haritaBaglantisi(adres,sehir,posta)` → `https://www.google.com/maps/search/?api=1&query=<kodlanmış adres>`. vCard'a ek `URL:` satırı olarak yazılır; koordinat (GEO) üretilmez çünkü adresi koordinata çevirmek çevrimiçi hizmete adres göndermek demektir. Bağlantı yalnızca kullanıcı açtığında Google'a gider. `.vcf` okuyucu bu önekli URL'leri yok sayar (web sitesi alanı kirlenmez, kendini sınama temiz kalır).
+- **Otomatik ayıklama (`otomatikMukerrer`, 40_dogrulama.js):** adı `anahtar()` ile eşit kayıtlar kümelenir; bir kayıt kümeye yalnızca aynı telefon alanında çakışan farklı numarası ve çakışan e-postası yoksa katılır (muhafazakâr: yanlış birleştirmeden kaçınır). Birden fazla üyeli kümeler `kayitBirlestir` ile birleşir. Aynı adlı ama ayrı bırakılanlar sayılıp kullanıcıya bildirilir. `listeyeYaz(yeni,mod,ayikla)` önceki listeyi `D.geriAl`'da tutar. JSON yedek yüklemesi ayıklamaz.

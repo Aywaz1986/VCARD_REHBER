@@ -87,7 +87,7 @@ function vcfOku(metin){
         break}
       case 'ORG':r.org=v.map(x=>x.trim()).filter(Boolean).join(' > ');break;
       case 'TITLE':r.title=v.trim();break;
-      case 'URL':if(r.url==='')r.url=v.trim();break;
+      case 'URL':if(r.url===''&&!/^https:\/\/www\.google\.com\/maps\/search\//i.test(v.trim()))r.url=v.trim();break;
       case 'CATEGORIES':r.cat=v.trim();break;
       case 'BDAY':{const b=bdayNorm(v.trim().replace(/T.*$/,''));r.bday=b===null?v.trim():b;break}
       case 'PHOTO':{
@@ -109,7 +109,7 @@ async function vcfDosyaYukle(file){
     let metin=new TextDecoder('utf-8').decode(bayt);
     const kartlar=vcfOku(metin);
     if(!kartlar.length){say('msgKaynak','Dosyada vCard bulunamadı.','warn');return}
-    listeyeYaz(kartlar,modOku());
-    say('msgKaynak',kartlar.length+' kişi .vcf dosyasından okundu.','ok');
+    const so=listeyeYaz(kartlar,modOku(),true);
+    say('msgKaynak',kartlar.length+' kişi .vcf dosyasından okundu.'+ayiklamaNotu(so),'ok');
   }catch(e){say('msgKaynak','.vcf okunamadı: '+e.message,'bad')}
 }

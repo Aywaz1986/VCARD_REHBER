@@ -28,8 +28,8 @@ function excelSayfaOku(ad){
     });
     out.push(r);
   }
-  listeyeYaz(out,modOku());
-  say('msgKaynak',out.length+' kişi okundu ("'+ad+'" sayfası).','ok');
+  const so=listeyeYaz(out,modOku(),true);
+  say('msgKaynak',out.length+' kişi okundu ("'+ad+'" sayfası).'+ayiklamaNotu(so)+(so.ayiklanan?' Listede '+D.satirlar.length+' kişi var.':''),'ok');
 }
 function sablonIndir(){
   const ws=XLSX.utils.aoa_to_sheet([

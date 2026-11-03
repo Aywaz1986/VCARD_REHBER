@@ -9,6 +9,7 @@
     <label>Yükleme şekli
       <select id="yukleMod"><option value="degistir">Listeyi değiştir</option><option value="ekle">Listenin sonuna ekle</option></select>
     </label>
+    <label class="chk"><input type="checkbox" id="optAyikla" checked> Yüklerken mükerrer kayıtları ayıkla</label>
   </div>
 
   <div class="pane" data-pane="excel">
@@ -79,5 +80,5 @@
     <p class="hint">Yedek dosyası kişisel veri içerir; güvenli saklayın. Tarayıcıda saklama varsayılan olarak kapalıdır.</p>
   </div>
 
-  <div id="msgKaynak" class="msg"></div>
+  <div class="row"><span id="msgKaynak" class="msg"></span><button id="mukGeriAl" hidden>Ayıklamayı geri al</button></div>
 </section>

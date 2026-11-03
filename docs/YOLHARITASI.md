@@ -74,3 +74,8 @@ Durum: ✅ v2.0.0/v2.1.0'da yapıldı · 🟡 kısmen · ⏳ planlandı · 🧪 
 5. ATÖLYE modülü (3.5).
 6. Özlük SQL Server gömülü kopya ve genel dağıtım (3.3, 3.4).
 7. Yüze göre fotoğraf ortalama (1.1b).
+
+## v2.2 sonrası fikirler
+- [ ] İsteğe bağlı çevrimiçi geocoding ile gerçek `GEO:` koordinatı (adres dışarı gider; açık onay ve uyarı gerekir).
+- [ ] Haritalar bağlantısı sağlayıcı seçimi (Google / OpenStreetMap / Yandex).
+- [ ] Ayıklamada "olası" (benzer ad) eşleşmeler için yükleme sonrası öneri bildirimi.

@@ -49,6 +49,9 @@ Tek sayfa, dört kart: **1 Veri kaynağı → 2 Liste → 3 Kontrol → 4 Ayarla
 |---|---|
 | `#ver` | vCard sürümü 2.1 / 3.0 / 4.0 |
 | `#optSkip`, `#optFn`, `#optSplit`, `#optTel` | Boş alan atla, FN yedeği, ad/soyad ayır, telefonu +90'a çevir |
+| `#optHarita` | Adresi Google Haritalar bağlantısı olarak vCard'a ekle (varsayılan açık) |
+| `#optAyikla`, `#mukGeriAl` | Yüklerken mükerrer ayıkla (varsayılan açık); son ayıklamayı geri al |
+| `data-harita` (📍) | Satırdaki adresi Google Haritalar'da yeni sekmede açar |
 | `#dahiliMod`, `#optOrg`, `#dispSablon` | Dahili numara modu, bileşenli ORG, görünen ad şablonu |
 | `#outlookCsv`, `#googleCsv`, `#csvTarih` | CSV çıktıları ve doğum tarihi biçimi |
 | `#yazdirBtn` | Yazdırılabilir rehber (`#yazdirAlani` geçici alan) |

@@ -85,6 +85,7 @@ with sayfa_ac() as s:
 
     # listeye ekle modu
     s.select_option("#yukleMod", "ekle")
+    s.uncheck("#optAyikla")   # bu adımda mükerrer ayıklama kapalı: aynı kayıtlar bilerek ikinci kez eklenir
     s.click("#sqYukle")
     s.wait_for_function("VCARD.D.satirlar.length===4")
     kontrol("'sona ekle' modu", s.evaluate("VCARD.D.satirlar.length") == 4)

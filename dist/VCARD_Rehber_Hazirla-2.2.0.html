@@ -79,7 +79,7 @@ tr.flash td{background:color-mix(in srgb,var(--warn) 25%,transparent)}
 }
 </style>
 </head>
-<body data-surum="2.1.0">
+<body data-surum="2.2.0">
 <header>
   <h1>VCARD Rehber Hazırlama <small id="surum" class="mut"></small></h1>
   <p>Excel, CSV, Özlük (SQLite) veritabanı veya mevcut .vcf dosyasından telefon rehberine aktarılabilir <b>.vcf</b> üretir. Tamamen tarayıcıda çalışır; veri dışarı gönderilmez.</p>
@@ -96,6 +96,7 @@ tr.flash td{background:color-mix(in srgb,var(--warn) 25%,transparent)}
     <label>Yükleme şekli
       <select id="yukleMod"><option value="degistir">Listeyi değiştir</option><option value="ekle">Listenin sonuna ekle</option></select>
     </label>
+    <label class="chk"><input type="checkbox" id="optAyikla" checked> Yüklerken mükerrer kayıtları ayıkla</label>
   </div>
 
   <div class="pane" data-pane="excel">
@@ -166,7 +167,7 @@ tr.flash td{background:color-mix(in srgb,var(--warn) 25%,transparent)}
     <p class="hint">Yedek dosyası kişisel veri içerir; güvenli saklayın. Tarayıcıda saklama varsayılan olarak kapalıdır.</p>
   </div>
 
-  <div id="msgKaynak" class="msg"></div>
+  <div class="row"><span id="msgKaynak" class="msg"></span><button id="mukGeriAl" hidden>Ayıklamayı geri al</button></div>
 </section>
 <section class="card" id="kartListe">
   <h2>2. Liste <span id="cnt" class="mut"></span></h2>
@@ -248,6 +249,7 @@ tr.flash td{background:color-mix(in srgb,var(--warn) 25%,transparent)}
         <option value="ekle">Ana numaraya ekle (+90312…,4101)</option>
       </select>
     </label>
+    <label class="chk"><input type="checkbox" id="optHarita" checked> Adresi haritada açılabilir yap (Google Haritalar bağlantısı ekle)</label>
     <label class="chk"><input type="checkbox" id="optOrg"> Kurumu <code>A &gt; B &gt; C</code> yolundan bileşenli yaz (ORG)</label>
     <label>Görünen ad şablonu
       <input type="text" id="dispSablon" placeholder="örn. {name} ({org})" style="min-width:220px">
@@ -2826,7 +2828,7 @@ window.SQLWASM_B64='AGFzbQEAAAABoARFYAJ/fwF/YAF/AX9gA39/fwBgA39/fwF/YAF/AGACf38A
 'use strict';
 /* ===== VCARD Rehber Hazırlama — modüller bu IIFE içinde birleşir (bkz. build.py) ===== */
 /* ===== 01 Sabitler ===== */
-const APP_SURUM='2.1.0';
+const APP_SURUM='2.2.0';
 
 /* Alan tanımları: sıra, Excel sütun sırası ile aynıdır (eski makro uyumu). */
 const ALANLAR=[
@@ -2958,12 +2960,35 @@ const D={
   sayfaBoyu:100,
   vcf:'',           // son üretilen vCard metni
   wb:null,          // son okunan Excel çalışma kitabı
-  sq:null           // {db, tablolar:{ad:[sütunlar]}, tablo}
+  sq:null,          // {db, tablolar:{ad:[sütunlar]}, tablo}
+  geriAl:null       // son otomatik ayıklamadan önceki liste
 };
-function listeyeYaz(yeni,mod){
+/* ayikla=true: yüklenen kayıtlarda (ve listede) aynı kişiyi tekrar edenler otomatik birleştirilir.
+   Dönüş: {ayiklanan, ayri} — ayıklanan kayıt sayısı, "aynı ad ama farklı telefon/e-posta" nedeniyle ayrı bırakılan kayıt sayısı. */
+function listeyeYaz(yeni,mod,ayikla){
   D.satirlar=(mod==='ekle')?D.satirlar.concat(yeni):yeni;
-  D.sayfa=0;
+  D.sayfa=0;D.geriAl=null;
+  let sonuc={ayiklanan:0,ayri:0};
+  if(ayikla&&$('optAyikla').checked){
+    const once=D.satirlar.map(r=>Object.assign({},r));          // ayıklamadan önceki hali (geri alma için)
+    sonuc=otomatikMukerrer();
+    if(sonuc.ayiklanan)D.geriAl=once;
+  }
+  $('mukGeriAl').hidden=!D.geriAl;
   tabloCiz();grupListesiYenile();otoSaklaYaz();
+  return sonuc;
+}
+function ayiklamaNotu(s){
+  if(!s||(!s.ayiklanan&&!s.ayri))return '';
+  return (s.ayiklanan?' '+s.ayiklanan+' mükerrer kayıt ayıklandı.':'')
+    +(s.ayri?' '+s.ayri+' kayıt aynı adlı ama farklı telefon/e-postalı olduğu için ayrı bırakıldı.':'');
+}
+function ayiklamayiGeriAl(){
+  if(!D.geriAl)return;
+  D.satirlar=D.geriAl;D.geriAl=null;D.sayfa=0;
+  $('mukGeriAl').hidden=true;
+  tabloCiz();grupListesiYenile();otoSaklaYaz();
+  say('msgKaynak','Ayıklama geri alındı ('+D.satirlar.length+' kişi).','ok');
 }
 function modOku(){return $('yukleMod').value}
 /* ===== 04 Metin kalitesi (saf fonksiyonlar: arayüze bağlı değil) ===== */
@@ -3065,8 +3090,8 @@ function excelSayfaOku(ad){
     });
     out.push(r);
   }
-  listeyeYaz(out,modOku());
-  say('msgKaynak',out.length+' kişi okundu ("'+ad+'" sayfası).','ok');
+  const so=listeyeYaz(out,modOku(),true);
+  say('msgKaynak',out.length+' kişi okundu ("'+ad+'" sayfası).'+ayiklamaNotu(so)+(so.ayiklanan?' Listede '+D.satirlar.length+' kişi var.':''),'ok');
 }
 function sablonIndir(){
   const ws=XLSX.utils.aoa_to_sheet([
@@ -3270,9 +3295,9 @@ async function sqliteYukle(){
     }catch(_){}
     if(i%20===0)say('msgKaynak','Fotoğraflar işleniyor… '+(i+1)+'/'+fotolar.length,'');
   }
-  listeyeYaz(satirlar,modOku());
+  const so=listeyeYaz(satirlar,modOku(),true);
   $('sqSonuc').textContent=satirlar.length+' kayıt'+(fotoSay?', '+fotoSay+' fotoğraf':'');
-  say('msgKaynak',satirlar.length+' kayıt yüklendi ("'+tablo+'" tablosu).','ok');
+  say('msgKaynak',satirlar.length+' kayıt yüklendi ("'+tablo+'" tablosu).'+ayiklamaNotu(so),'ok');
 }
 /* ===== 13 Kaynak: .vcf okuma (vCard 2.1 / 3.0 / 4.0) =====
    Hem "içe aktar" sekmesi hem de üretilen çıktının kendini sınaması bu ayrıştırıcıyı kullanır. */
@@ -3363,7 +3388,7 @@ function vcfOku(metin){
         break}
       case 'ORG':r.org=v.map(x=>x.trim()).filter(Boolean).join(' > ');break;
       case 'TITLE':r.title=v.trim();break;
-      case 'URL':if(r.url==='')r.url=v.trim();break;
+      case 'URL':if(r.url===''&&!/^https:\/\/www\.google\.com\/maps\/search\//i.test(v.trim()))r.url=v.trim();break;
       case 'CATEGORIES':r.cat=v.trim();break;
       case 'BDAY':{const b=bdayNorm(v.trim().replace(/T.*$/,''));r.bday=b===null?v.trim():b;break}
       case 'PHOTO':{
@@ -3385,8 +3410,8 @@ async function vcfDosyaYukle(file){
     let metin=new TextDecoder('utf-8').decode(bayt);
     const kartlar=vcfOku(metin);
     if(!kartlar.length){say('msgKaynak','Dosyada vCard bulunamadı.','warn');return}
-    listeyeYaz(kartlar,modOku());
-    say('msgKaynak',kartlar.length+' kişi .vcf dosyasından okundu.','ok');
+    const so=listeyeYaz(kartlar,modOku(),true);
+    say('msgKaynak',kartlar.length+' kişi .vcf dosyasından okundu.'+ayiklamaNotu(so),'ok');
   }catch(e){say('msgKaynak','.vcf okunamadı: '+e.message,'bad')}
 }
 /* ===== 20 Liste tablosu (sayfalı, düzenlenebilir) ===== */
@@ -3419,7 +3444,7 @@ function tabloCiz(){
         h+='<td'+(hata?' class="err"':'')+'><input type="text" data-k="'+k+'" value="'+esc(r[k])+'"></td>';
       }
     });
-    h+='<td><button data-qr="'+i+'" title="Tek kişilik QR kod">📱</button> <button class="dng" data-del="'+i+'" title="Satırı sil">✕</button></td></tr>';
+    h+='<td><button data-harita="'+i+'" title="Adresi Google Haritalar\'da göster"'+((String(r.addr).trim()||String(r.city).trim())?'':' disabled')+'>📍</button> <button data-qr="'+i+'" title="Tek kişilik QR kod">📱</button> <button class="dng" data-del="'+i+'" title="Satırı sil">✕</button></td></tr>';
   });
   $('tbl').innerHTML=h+'</tbody>';
   $('cnt').textContent='— '+D.satirlar.length+' kişi'+(idx.length!==D.satirlar.length?' ('+idx.length+' eşleşen)':'');
@@ -3452,6 +3477,7 @@ function tabloOlaylari(){
   });
   t.addEventListener('click',e=>{
     const b=e.target.closest('button');if(!b)return;
+    if(b.dataset.harita!==undefined){haritadaAc(+b.dataset.harita);return}
     if(b.dataset.qr!==undefined){qrGoster(+b.dataset.qr);return}
     if(b.dataset.del!==undefined){D.satirlar.splice(+b.dataset.del,1);tabloCiz();grupListesiYenile();otoSaklaYaz()}
     if(b.dataset.pick!==undefined){
@@ -3473,6 +3499,12 @@ function tabloOlaylari(){
   $('pgOnce').onclick=()=>{D.sayfa--;tabloCiz()};
   $('pgSonra').onclick=()=>{D.sayfa++;tabloCiz()};
   $('pgBoyut').onchange=e=>{D.sayfaBoyu=+e.target.value;D.sayfa=0;tabloCiz()};
+}
+
+function haritadaAc(i){
+  const r=D.satirlar[i];if(!r)return;
+  const u=haritaBaglantisi(r.addr,r.city,r.zip);
+  if(u)window.open(u,'_blank','noopener');
 }
 /* ===== 30 Fotoğraf ===== */
 function toJpeg200(blob){
@@ -3632,6 +3664,34 @@ function mukerrerBirlestir(gruplar){ // gruplar: [{idx}] veya [[idx]]
   mukerrerGoster();
   return sil.size;
 }
+
+/* Yüklerken otomatik ayıklama — ihtiyatlı kural: aynı ad VE çakışan telefon/e-posta yok.
+   (Aynı telefonu paylaşan farklı kişiler, ya da aynı adlı farklı kişiler birleştirilmez.) */
+function telAnahtarlari(r){
+  const o={};
+  TEL_ALANLARI.forEach(k=>{const d=String(r[k]).replace(/\D/g,'');if(d.length>=7)o[k]=d.slice(-10)});
+  return o;
+}
+function telCakisir(a,b){return TEL_ALANLARI.some(k=>a[k]&&b[k]&&a[k]!==b[k])}
+function otomatikMukerrer(){
+  const kova=new Map();
+  D.satirlar.forEach((r,i)=>{const k=anahtar(r.name||r.disp);if(!k)return;if(!kova.has(k))kova.set(k,[]);kova.get(k).push(i)});
+  const sil=new Set();let ayri=0;
+  kova.forEach(idxler=>{
+    if(idxler.length<2)return;
+    const kumeler=[];
+    idxler.forEach(i=>{
+      const r=D.satirlar[i],t=telAnahtarlari(r),m=String(r.mail).trim().toLowerCase();
+      const k=kumeler.find(c=>!telCakisir(c.tel,t)&&(!c.mail||!m||c.mail===m));
+      if(k){k.uyeler.push(i);Object.keys(t).forEach(f=>{if(!k.tel[f])k.tel[f]=t[f]});if(!k.mail)k.mail=m}
+      else kumeler.push({uyeler:[i],tel:Object.assign({},t),mail:m});
+    });
+    if(kumeler.length>1)ayri+=kumeler.length;
+    kumeler.forEach(c=>{if(c.uyeler.length>1)kayitBirlestir(c.uyeler).forEach(i=>sil.add(i))});
+  });
+  D.satirlar=D.satirlar.filter((_,i)=>!sil.has(i));
+  return {ayiklanan:sil.size,ayri};
+}
 /* ===== 41 Toplu düzeltme (önizlemeli) ===== */
 const METIN_ALANLARI=['name','disp','addr','org','title','cat','note','nick','city','zip','url'];
 let _duzeltmeler=[];
@@ -3718,6 +3778,12 @@ function orgBilesenleri(org,o){
   if(o.orgBilesen&&/\s>\s/.test(org))return org.split(/\s*>\s*/).filter(Boolean);
   return org?[org]:[];
 }
+/* Google Haritalar arama bağlantısı (API anahtarı gerekmez; telefonda dokununca konum açılır) */
+function haritaBaglantisi(adres,sehir,posta){
+  const t=x=>String(x==null?'':x).trim().replace(/\s*\n\s*/g,', ');
+  if(!t(adres)&&!t(sehir))return '';
+  return 'https://www.google.com/maps/search/?api=1&query='+encodeURIComponent([t(adres),t(sehir),t(posta)].filter(Boolean).join(', '));
+}
 /* Telefon değeri: tel normalizasyonu yalnız ana numaralara; dahili ayrıca ele alınır */
 function telDeger(r,k,o){
   let x=String(r[k]==null?'':r[k]).trim();
@@ -3776,6 +3842,10 @@ function vcfKart(r,v,o){
   }
   if(dahil('title'))ekle('TITLE',r.title,true);
   if(dahil('url'))ekle('URL',r.url,false);
+  if(o.harita){
+    const hb=haritaBaglantisi(dahil('addr')?r.addr:'',dahil('city')?r.city:'',dahil('zip')?r.zip:'');
+    if(hb)L.push('URL:'+hb);
+  }
   if(dahil('cat'))ekle('CATEGORIES',r.cat,true);
   if(dahil('note'))ekle('NOTE',r.note,true);
   if(dahil('bday')&&/^\d{8}$/.test(r.bday)){
@@ -3981,7 +4051,7 @@ function secenekler(){
   ALANLAR.forEach(a=>{const c=document.querySelector('[data-dahil="'+a.k+'"]');if(c)dahil[a.k]=c.checked});
   return {
     bosAtla:$('optSkip').checked,fnYedek:$('optFn').checked,ayir:$('optSplit').checked,tel:$('optTel').checked,dahil,
-    dahiliMod:$('dahiliMod').value,orgBilesen:$('optOrg').checked,dispSablon:$('dispSablon').value.trim()
+    dahiliMod:$('dahiliMod').value,orgBilesen:$('optOrg').checked,dispSablon:$('dispSablon').value.trim(),harita:$('optHarita').checked
   };
 }
 function dahilListeKur(){
@@ -4146,7 +4216,7 @@ function arayuzKur(){
     catch(_){const t=document.createElement('textarea');t.value=D.vcf;document.body.appendChild(t);t.select();document.execCommand('copy');t.remove()}
     say('msg','Panoya kopyalandı.','ok');
   };
-  ['ver','optSkip','optFn','optSplit','optTel','dahiliMod','optOrg'].forEach(id=>$(id).addEventListener('change',cikiTemizle));
+  ['ver','optSkip','optFn','optSplit','optTel','dahiliMod','optOrg','optHarita'].forEach(id=>$(id).addEventListener('change',cikiTemizle));
   $('dahilListe').addEventListener('change',cikiTemizle);
   $('dispSablon').addEventListener('input',cikiTemizle);
   $('grupIndir').onclick=grupIndir;
@@ -4155,6 +4225,7 @@ function arayuzKur(){
   $('outlookCsv').onclick=()=>csvIndir('outlook');
   $('googleCsv').onclick=()=>csvIndir('google');
   $('yazdirBtn').onclick=rehberYazdir;
+  $('mukGeriAl').onclick=ayiklamayiGeriAl;
   $('qrKapat').onclick=()=>$('qrDlg').close();
   // toplu düzeltme
   sozlukYukle();
@@ -4163,7 +4234,7 @@ function arayuzKur(){
   $('duzUygula').onclick=duzeltmeUygula;
 
   // test ve ileri düzey kullanım için dışa açılan küçük API
-  window.VCARD={D,vcfUret,vcfOku,vcfDogrula,telNorm,bdayNorm,denetle,mukerrerGruplar,icsUret,zipOlustur,tabloCiz,APP_SURUM,
+  window.VCARD={D,vcfUret,vcfOku,vcfDogrula,telNorm,bdayNorm,denetle,mukerrerGruplar,icsUret,zipOlustur,tabloCiz,APP_SURUM,haritaBaglantisi,otomatikMukerrer,
     adBicimle,bosluklariTemizle,epostaTemizle,sozlukUygula,sozlukAyristir,duzeltmeUret,outlookCsvUret,googleCsvUret,qrUret,qrVcfMetni,yazdirHazirla,secenekler};
 }
 arayuzKur();

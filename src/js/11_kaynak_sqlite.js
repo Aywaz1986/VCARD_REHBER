@@ -191,7 +191,7 @@ async function sqliteYukle(){
     }catch(_){}
     if(i%20===0)say('msgKaynak','Fotoğraflar işleniyor… '+(i+1)+'/'+fotolar.length,'');
   }
-  listeyeYaz(satirlar,modOku());
+  const so=listeyeYaz(satirlar,modOku(),true);
   $('sqSonuc').textContent=satirlar.length+' kayıt'+(fotoSay?', '+fotoSay+' fotoğraf':'');
-  say('msgKaynak',satirlar.length+' kayıt yüklendi ("'+tablo+'" tablosu).','ok');
+  say('msgKaynak',satirlar.length+' kayıt yüklendi ("'+tablo+'" tablosu).'+ayiklamaNotu(so),'ok');
 }

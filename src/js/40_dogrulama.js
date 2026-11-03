@@ -117,3 +117,31 @@ function mukerrerBirlestir(gruplar){ // gruplar: [{idx}] veya [[idx]]
   mukerrerGoster();
   return sil.size;
 }
+
+/* Yüklerken otomatik ayıklama — ihtiyatlı kural: aynı ad VE çakışan telefon/e-posta yok.
+   (Aynı telefonu paylaşan farklı kişiler, ya da aynı adlı farklı kişiler birleştirilmez.) */
+function telAnahtarlari(r){
+  const o={};
+  TEL_ALANLARI.forEach(k=>{const d=String(r[k]).replace(/\D/g,'');if(d.length>=7)o[k]=d.slice(-10)});
+  return o;
+}
+function telCakisir(a,b){return TEL_ALANLARI.some(k=>a[k]&&b[k]&&a[k]!==b[k])}
+function otomatikMukerrer(){
+  const kova=new Map();
+  D.satirlar.forEach((r,i)=>{const k=anahtar(r.name||r.disp);if(!k)return;if(!kova.has(k))kova.set(k,[]);kova.get(k).push(i)});
+  const sil=new Set();let ayri=0;
+  kova.forEach(idxler=>{
+    if(idxler.length<2)return;
+    const kumeler=[];
+    idxler.forEach(i=>{
+      const r=D.satirlar[i],t=telAnahtarlari(r),m=String(r.mail).trim().toLowerCase();
+      const k=kumeler.find(c=>!telCakisir(c.tel,t)&&(!c.mail||!m||c.mail===m));
+      if(k){k.uyeler.push(i);Object.keys(t).forEach(f=>{if(!k.tel[f])k.tel[f]=t[f]});if(!k.mail)k.mail=m}
+      else kumeler.push({uyeler:[i],tel:Object.assign({},t),mail:m});
+    });
+    if(kumeler.length>1)ayri+=kumeler.length;
+    kumeler.forEach(c=>{if(c.uyeler.length>1)kayitBirlestir(c.uyeler).forEach(i=>sil.add(i))});
+  });
+  D.satirlar=D.satirlar.filter((_,i)=>!sil.has(i));
+  return {ayiklanan:sil.size,ayri};
+}

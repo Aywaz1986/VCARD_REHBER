@@ -2,6 +2,20 @@
 
 ## Yayınlanmamış
 
+## 2.2.0 — 2026-11-03
+Adres → harita bağlantısı ve yüklerken otomatik mükerrer ayıklama.
+
+### Eklendi
+- **Harita bağlantısı:** adresi (sokak, şehir, posta kodu) olan kişilerin vCard kaydına Google Haritalar bağlantısı (`URL:`) eklenir; telefonda kişi kartından tek dokunuşla konum açılır. Seçenek: "Adresi haritada açılabilir yap" (varsayılan açık). Araç hiçbir adresi dışarı göndermez; bağlantı yalnızca açıldığında kullanılır.
+- Listede her satırda 📍 düğmesi (adresi yoksa pasif): Google Haritalar yeni sekmede açılır. Tek kişilik QR kod da bağlantıyı taşır.
+- `.vcf` okurken haritalar bağlantısı web sitesi sanılmaz (gidiş-dönüş temiz).
+- **Yüklerken mükerrer ayıklama** (Excel, CSV, SQLite, .vcf; varsayılan açık): aynı ad + çakışmayan telefon/e-posta → tek kayıtta birleştirilir, boş alanlar doldurulur. Aynı adlı ama farklı telefon/e-postalı kişiler ayrı bırakılır ve bildirilir. "Ayıklamayı geri al" düğmesi.
+- Test 10 (harita ve ayıklama).
+
+### Değişti
+- Üretilen vCard'da adresi olan kişilerde `URL:` satırı artık bulunabilir (harita bağlantısı).
+- Gerçek GEO koordinatı eklenmedi: adresi koordinata çevirmek çevrimiçi hizmete adres göndermeyi gerektirir (bkz. YOLHARITASI).
+
 ## 2.1.0 — 2026-11-03
 Alan ve biçim zenginleştirme, veri kalitesi ve yeni çıktı biçimleri.
 

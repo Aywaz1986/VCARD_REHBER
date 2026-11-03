@@ -4,7 +4,7 @@ function secenekler(){
   ALANLAR.forEach(a=>{const c=document.querySelector('[data-dahil="'+a.k+'"]');if(c)dahil[a.k]=c.checked});
   return {
     bosAtla:$('optSkip').checked,fnYedek:$('optFn').checked,ayir:$('optSplit').checked,tel:$('optTel').checked,dahil,
-    dahiliMod:$('dahiliMod').value,orgBilesen:$('optOrg').checked,dispSablon:$('dispSablon').value.trim()
+    dahiliMod:$('dahiliMod').value,orgBilesen:$('optOrg').checked,dispSablon:$('dispSablon').value.trim(),harita:$('optHarita').checked
   };
 }
 function dahilListeKur(){

@@ -61,7 +61,7 @@ function arayuzKur(){
     catch(_){const t=document.createElement('textarea');t.value=D.vcf;document.body.appendChild(t);t.select();document.execCommand('copy');t.remove()}
     say('msg','Panoya kopyalandı.','ok');
   };
-  ['ver','optSkip','optFn','optSplit','optTel','dahiliMod','optOrg'].forEach(id=>$(id).addEventListener('change',cikiTemizle));
+  ['ver','optSkip','optFn','optSplit','optTel','dahiliMod','optOrg','optHarita'].forEach(id=>$(id).addEventListener('change',cikiTemizle));
   $('dahilListe').addEventListener('change',cikiTemizle);
   $('dispSablon').addEventListener('input',cikiTemizle);
   $('grupIndir').onclick=grupIndir;
@@ -70,6 +70,7 @@ function arayuzKur(){
   $('outlookCsv').onclick=()=>csvIndir('outlook');
   $('googleCsv').onclick=()=>csvIndir('google');
   $('yazdirBtn').onclick=rehberYazdir;
+  $('mukGeriAl').onclick=ayiklamayiGeriAl;
   $('qrKapat').onclick=()=>$('qrDlg').close();
   // toplu düzeltme
   sozlukYukle();
@@ -78,7 +79,7 @@ function arayuzKur(){
   $('duzUygula').onclick=duzeltmeUygula;
 
   // test ve ileri düzey kullanım için dışa açılan küçük API
-  window.VCARD={D,vcfUret,vcfOku,vcfDogrula,telNorm,bdayNorm,denetle,mukerrerGruplar,icsUret,zipOlustur,tabloCiz,APP_SURUM,
+  window.VCARD={D,vcfUret,vcfOku,vcfDogrula,telNorm,bdayNorm,denetle,mukerrerGruplar,icsUret,zipOlustur,tabloCiz,APP_SURUM,haritaBaglantisi,otomatikMukerrer,
     adBicimle,bosluklariTemizle,epostaTemizle,sozlukUygula,sozlukAyristir,duzeltmeUret,outlookCsvUret,googleCsvUret,qrUret,qrVcfMetni,yazdirHazirla,secenekler};
 }
 arayuzKur();

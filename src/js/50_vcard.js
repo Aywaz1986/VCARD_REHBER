@@ -32,6 +32,12 @@ function orgBilesenleri(org,o){
   if(o.orgBilesen&&/\s>\s/.test(org))return org.split(/\s*>\s*/).filter(Boolean);
   return org?[org]:[];
 }
+/* Google Haritalar arama bağlantısı (API anahtarı gerekmez; telefonda dokununca konum açılır) */
+function haritaBaglantisi(adres,sehir,posta){
+  const t=x=>String(x==null?'':x).trim().replace(/\s*\n\s*/g,', ');
+  if(!t(adres)&&!t(sehir))return '';
+  return 'https://www.google.com/maps/search/?api=1&query='+encodeURIComponent([t(adres),t(sehir),t(posta)].filter(Boolean).join(', '));
+}
 /* Telefon değeri: tel normalizasyonu yalnız ana numaralara; dahili ayrıca ele alınır */
 function telDeger(r,k,o){
   let x=String(r[k]==null?'':r[k]).trim();
@@ -90,6 +96,10 @@ function vcfKart(r,v,o){
   }
   if(dahil('title'))ekle('TITLE',r.title,true);
   if(dahil('url'))ekle('URL',r.url,false);
+  if(o.harita){
+    const hb=haritaBaglantisi(dahil('addr')?r.addr:'',dahil('city')?r.city:'',dahil('zip')?r.zip:'');
+    if(hb)L.push('URL:'+hb);
+  }
   if(dahil('cat'))ekle('CATEGORIES',r.cat,true);
   if(dahil('note'))ekle('NOTE',r.note,true);
   if(dahil('bday')&&/^\d{8}$/.test(r.bday)){

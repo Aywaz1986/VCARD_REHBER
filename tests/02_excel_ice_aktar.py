@@ -38,7 +38,7 @@ with sayfa_ac() as s:
     kontrol("telefon +90 biçiminde", "TEL;CELL:+905321112233" in out)
     kontrol("kısa/sabit numara +90 alan koduyla", "TEL;WORK:+903125550000" in out)
     kontrol("BDAY YYYYMMDD", "BDAY:19660505" in out)
-    kontrol("boş alanlar yazılmadı (URL/FAX yok)", "URL:" not in out and "FAX" not in out)
+    kontrol("boş alanlar yazılmadı (web sitesi/FAX yok; tek URL harita bağlantısı)", out.count("URL:") == 1 and "URL:https://www.google.com/maps/search/?api=1&query=" in out and "FAX" not in out)
     kontrol("Türkçe karakter QP (ş=C5=9F)", "=C5=9F" in out)
     kontrol("kendini sınama geçti", "Kendini sınama geçti" in s.inner_text("#dogrulaSonuc"), s.inner_text("#dogrulaSonuc"))
 
