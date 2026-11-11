@@ -65,3 +65,6 @@ Tek sayfa, dört kart: **1 Veri kaynağı → 2 Liste → 3 Kontrol → 4 Ayarla
 `<dialog id="qrDlg">`: `#qrBaslik`, `#qrCanvas`, `#qrBilgi`, `#qrDl` (PNG indir), `#qrKapat`. Listede her satırın sonundaki 📱 (`data-qr`) açar.
 
 Pencere/diyalog: tarayıcı `prompt` (eşleştirme adı), `confirm` (silme/birleştirme) ve QR `<dialog>` kullanılır.
+
+## Excel sütun eşleştirme (v2.3)
+`#exPanel` (Excel panelinde, dosya yüklenince görünür): `#exGrid` içinde her alan için `select[data-ex="<alan>"]` (+ `data-ex="_soyad"`), `#exOto` (otomatik eşleştirmeye dön), `#exSira` (sütun sırasına göre ata), `#exNot` (kullanılmayan sütunlar).

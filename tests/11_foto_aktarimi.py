@@ -68,7 +68,7 @@ with sayfa_ac() as s:
     msg = s.inner_text("#msgKaynak")
     kontrol("Excel: resim yüklenmemiş kişiler için klasör uyarısı", "2 kişide fotoğraf dosya adı var" in msg and "Fotoğraf klasörü seç" in msg, msg)
     s.set_input_files("#photoDir", fd)
-    s.wait_for_function("document.getElementById('msgKaynak').textContent.includes('eşleşti')")
+    s.wait_for_function("document.getElementById('msgKaynak').textContent.includes('fotoğraf eşleşti')")
     msg = s.inner_text("#msgKaynak")
     kontrol("uzantı farklı olsa da (ali.png ↔ ali.jpg) eşleşti", "1 fotoğraf eşleşti" in msg and s.evaluate("!!VCARD.D.satirlar[0]._img"), msg)
     kontrol("eşleşmeyen ad bildirildi", "1 kişinin fotoğraf adı" in msg and "bulunamadı" in msg, msg)

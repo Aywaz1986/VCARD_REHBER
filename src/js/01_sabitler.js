@@ -1,5 +1,5 @@
 /* ===== 01 Sabitler ===== */
-const APP_SURUM='2.2.2';
+const APP_SURUM='2.3.0';
 
 /* Alan tanımları: sıra, Excel sütun sırası ile aynıdır (eski makro uyumu). */
 const ALANLAR=[
@@ -29,3 +29,4 @@ const TEL_ALANLARI=ALANLAR.filter(a=>a.tel).map(a=>a.k);
 const LS_ESLESME='vcard.eslesme.v1';
 const LS_OTO='vcard.calisma.v1';
 const LS_SOZLUK='vcard.sozluk.v1';
+const LS_EXESLESME='vcard.exeslesme.v1';

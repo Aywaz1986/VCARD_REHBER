@@ -6,7 +6,8 @@ const D={
   vcf:'',           // son üretilen vCard metni
   wb:null,          // son okunan Excel çalışma kitabı
   sq:null,          // {db, tablolar:{ad:[sütunlar]}, tablo}
-  geriAl:null       // son otomatik ayıklamadan önceki liste
+  geriAl:null,      // son otomatik ayıklamadan önceki liste
+  ex:null           // son okunan Excel sayfası: {ad,veri,bas,es,imza,oncesi}
 };
 /* ayikla=true: yüklenen kayıtlarda (ve listede) aynı kişiyi tekrar edenler otomatik birleştirilir.
    Dönüş: {ayiklanan, ayri} — ayıklanan kayıt sayısı, "aynı ad ama farklı telefon/e-posta" nedeniyle ayrı bırakılan kayıt sayısı. */

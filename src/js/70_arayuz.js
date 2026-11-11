@@ -41,6 +41,15 @@ function arayuzKur(){
     if(e.target.checked)otoSaklaYaz();else try{localStorage.removeItem(LS_OTO)}catch(_){}
   };
   // fotoğraf
+  $('exGrid').onchange=e=>{
+    const t=e.target;if(!t.dataset||!t.dataset.ex||!D.ex)return;
+    const v=Number(t.value);
+    if(t.dataset.ex==='_soyad')D.ex.es.soyad=v;
+    else{if(v<0)delete D.ex.es.map[t.dataset.ex];else D.ex.es.map[t.dataset.ex]=v;D.ex.es.guven[t.dataset.ex]='el'}
+    excelYenidenUygula(true);
+  };
+  $('exOto').onclick=()=>{if(!D.ex)return;D.ex.es=excelOtoEsle(D.ex.bas);excelYenidenUygula(false);const k=lsOku(LS_EXESLESME)||{};delete k[D.ex.imza];lsYaz(LS_EXESLESME,k)};
+  $('exSira').onclick=()=>{if(!D.ex)return;D.ex.es=excelSiraEsle();excelYenidenUygula(true)};
   $('photoIn').onchange=e=>{fotoTopluEsle([...e.target.files]);e.target.value=''};
   $('photoDir').onchange=e=>{fotoTopluEsle([...e.target.files]);e.target.value=''};
   // kontrol

@@ -2,6 +2,16 @@
 
 ## Yayınlanmamış
 
+## 2.3.0 — 2026-11-11
+Excel/CSV için sütun eşleştirme.
+
+### Eklendi
+- Excel/CSV artık sütun **sırasına** değil **başlıklara** göre okunur: sıra farklı, başlık adı farklı (Cep Telefonu, E-Posta, Departman, Görev…), fazladan sütunlu dosyalar doğru okunur. Ayrı "Ad" + "Soyad" sütunları birleştirilir.
+- **Sütun eşleştirme paneli:** her rehber alanı için seçilen Excel sütunu ve ilk satırdaki değer görünür; durum rozeti (✔ başlıktan / ⚠ tahmin / elle seçildi). Listeden değiştirince liste anında yenilenir; "sona ekle" modunda önceki kayıtlar korunur. Kullanılmayan sütunlar listelenir.
+- Elle yapılan eşleştirme aynı başlık düzeni için hatırlanır (tarayıcıda); "Otomatik eşleştirmeye dön" ve "Sütun sırasına göre ata" düğmeleri.
+- Başlıklar hiç tanınmazsa eski davranış (sütun sırası) uyarıyla uygulanır; eski 14/20 sütunlu şablon aynen çalışır.
+- Test 12.
+
 ## 2.2.2 — 2026-11-03
 Fotoğraf aktarımı düzeltmeleri.
 
